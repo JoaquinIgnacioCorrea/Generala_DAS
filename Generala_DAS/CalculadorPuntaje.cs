@@ -8,7 +8,7 @@ namespace Generala_DAS
 {
     public static class CalculadorPuntaje
     {
-        public static int CalcularPuntaje(Categoria categoria, IReadOnlyList<int> valoresDados, bool servido) 
+        public static int CalcularPuntaje(Categoria categoria, IReadOnlyList<int> valoresDados, bool servida) 
         {
             switch (categoria)
             {
@@ -24,12 +24,16 @@ namespace Generala_DAS
                     return CalcularNumero(valoresDados, 5);
                 case Categoria.seises:
                     return CalcularNumero(valoresDados, 6);
-                case Categoria.escalera:
-                    return Generala(valoresDados) ? 1 : 0;
-                case Categoria.poker:
-                    return Poker(valoresDados)? 1: 0;
+
                 case Categoria.full:
-                    return Poker(valoresDados)? 1:0;
+                    return Full(valoresDados) ? (servida ? 25 : 20) : 0;
+                case Categoria.poker:
+                    return Poker(valoresDados) ? (servida ? 35 : 30) : 0;
+                case Categoria.escalera:
+                    return Generala(valoresDados) ? (servida ? 45 : 40) : 0;
+                case Categoria.generala:
+                    return Generala(valoresDados) ? (servida ? 60 : 55) : 0;
+                
                 case Categoria.generala_doble:
                     return Doble(valoresDados) ? 1 : 0;
                 default: return 0;

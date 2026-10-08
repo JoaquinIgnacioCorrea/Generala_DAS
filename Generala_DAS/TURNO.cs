@@ -15,6 +15,7 @@ namespace Generala_DAS
 			lanzamientoActual = 1;
 			sePuedeLanzar = true;
 			finalizado = false;
+			servida = true;
 		
 		}
 		private JUGADOR jugadorActual;
@@ -42,12 +43,23 @@ namespace Generala_DAS
 		{
 			get { return finalizado; }
 		}
+		private bool servida;
+
+		public bool Servida
+		{
+			get { return servida; }
+			set { servida = value; }
+		}
+
+
+
 
 		public void RegistrarLanzamiento() 
 		{
 			if (sePuedeLanzar) 
 			{
 				lanzamientoActual++;
+				if (lanzamientoActual>1) { servida = false; }
 				if (lanzamientoActual == 3) { sePuedeLanzar = false;  }
 			}
 		}
