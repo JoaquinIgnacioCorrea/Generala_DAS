@@ -7,5 +7,10 @@ namespace Generala_DAS
 {
     public class TABLERO
     {
+		
+
+
+
+
     }
 }

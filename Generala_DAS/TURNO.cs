@@ -7,5 +7,8 @@ namespace Generala_DAS
 {
     public class TURNO
     {
+        
+
+        
     }
 }
