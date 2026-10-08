@@ -7,5 +7,6 @@ namespace Generala_DAS
 {
     public class JUGADOR
     {
+        
     }
 }
