@@ -80,7 +80,7 @@ namespace Generala_DAS
 
 		private void DobleHabilitada() 
 		{
-			casilleros[Categoria.generala_doble].Esta_anotado && casilleros[Categoria.generala_doble].Puntaje > 49 ? dobleHabilitada = true : dobleHabilitada = false;
+			casilleros[CATEGORIAS.generala_doble].Esta_anotado && casilleros[CATEGORIAS.generala_doble].Puntaje > 49 ? dobleHabilitada = true : dobleHabilitada = false;
 		}
     }
 }

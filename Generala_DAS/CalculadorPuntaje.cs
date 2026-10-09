@@ -8,33 +8,33 @@ namespace Generala_DAS
 {
     public static class CalculadorPuntaje
     {
-        public static int CalcularPuntaje(Categoria categoria, IReadOnlyList<int> valoresDados, bool servida, TABLERO Tablero) 
+        public static int CalcularPuntaje(CATEGORIAS categoria, IReadOnlyList<int> valoresDados, bool servida, TABLERO Tablero) 
         {
             switch (categoria)
             {
-                case Categoria.unos:
+                case CATEGORIAS.unos:
                     return CalcularNumero(valoresDados, 1);
-                case Categoria.doses:
+                case CATEGORIAS.doses:
                     return CalcularNumero(valoresDados, 2);
-                case Categoria.treses:
+                case CATEGORIAS.treses:
                     return CalcularNumero(valoresDados, 3);
-                case Categoria.cuatros:
+                case CATEGORIAS.cuatros:
                     return CalcularNumero(valoresDados, 4);
-                case Categoria.cincos:
+                case CATEGORIAS.cincos:
                     return CalcularNumero(valoresDados, 5);
-                case Categoria.seises:
+                case CATEGORIAS.seises:
                     return CalcularNumero(valoresDados, 6);
 
-                case Categoria.full:
+                case CATEGORIAS.full:
                     return Full(valoresDados) ? (servida ? 25 : 20) : 0;
-                case Categoria.poker:
+                case CATEGORIAS.poker:
                     return Poker(valoresDados) ? (servida ? 35 : 30) : 0;
-                case Categoria.escalera:
+                case CATEGORIAS.escalera:
                     return Generala(valoresDados) ? (servida ? 45 : 40) : 0;
-                case Categoria.generala:
+                case CATEGORIAS.generala:
                     return Generala(valoresDados) ? (servida ? 60 : 50) : 0;
                 
-                case Categoria.generala_doble:
+                case CATEGORIAS.generala_doble:
                     return Doble(valoresDados, Tablero) ? (servida ? 120 : 100) : 0;
                 default: return 0;
             }

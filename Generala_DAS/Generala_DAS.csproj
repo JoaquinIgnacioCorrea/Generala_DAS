@@ -50,7 +50,6 @@
     <Compile Include="CASILLERO.cs" />
     <Compile Include="CATEGORIAS.cs" />
     <Compile Include="CalculadorPuntaje.cs" />
-    <Compile Include="CategoriaGenerala.cs" />
     <Compile Include="CUBILETE.cs" />
     <Compile Include="DADO.cs" />
     <Compile Include="Form1.cs">
