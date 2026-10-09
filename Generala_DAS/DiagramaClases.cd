@@ -3,14 +3,14 @@
   <Class Name="Generala_DAS.JUGADOR">
     <Position X="2.5" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAQAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>JUGADOR.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Generala_DAS.TURNO">
     <Position X="4.25" Y="4.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAgIAAAACQAAAAEAAAAAAAAAAQAAAgEAAAABIAAIA=</HashCode>
       <FileName>TURNO.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -42,6 +42,20 @@
       <FileName>ACCESO.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Generala_DAS.CalculadorPuntaje">
+    <Position X="9.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACFAAAAAACAAAQAAAAAAAEABAgAAAAAAAAA=</HashCode>
+      <FileName>CalculadorPuntaje.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Generala_DAS.Categoria">
+    <Position X="11.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAEAAAQAAAAAAAAAETAACAAABgAAAAAEA=</HashCode>
+      <FileName>CategoriaGenerala.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Class Name="Generala_DAS.CASILLERO">
     <Position X="0.5" Y="8" Width="1.5" />
     <TypeIdentifier>
