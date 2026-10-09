@@ -40,6 +40,14 @@ namespace Generala_DAS
 			get { return casilleros; }
 			set { casilleros = value; }
 		}
+		private bool dobleHabilitada;
+
+		public bool DobleHabilitada
+		{
+			get { return dobleHabilitada; }
+			set { dobleHabilitada = value; }
+		}
+
 
 		public bool CasilleroDisponible(CATEGORIAS categoria)
 		{
@@ -68,6 +76,11 @@ namespace Generala_DAS
 		private void TableroCompleto()
 		{
 			esta_completa = casilleros.Values.All(v => v.Esta_anotado == true);
+		}
+
+		private void DobleHabilitada() 
+		{
+			casilleros[Categoria.generala_doble].Esta_anotado && casilleros[Categoria.generala_doble].Puntaje > 49 ? dobleHabilitada = true : dobleHabilitada = false;
 		}
     }
 }

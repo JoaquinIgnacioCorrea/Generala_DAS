@@ -8,7 +8,7 @@ namespace Generala_DAS
 {
     public static class CalculadorPuntaje
     {
-        public static int CalcularPuntaje(Categoria categoria, IReadOnlyList<int> valoresDados, bool servida) 
+        public static int CalcularPuntaje(Categoria categoria, IReadOnlyList<int> valoresDados, bool servida, TABLERO Tablero) 
         {
             switch (categoria)
             {
@@ -32,10 +32,10 @@ namespace Generala_DAS
                 case Categoria.escalera:
                     return Generala(valoresDados) ? (servida ? 45 : 40) : 0;
                 case Categoria.generala:
-                    return Generala(valoresDados) ? (servida ? 60 : 55) : 0;
+                    return Generala(valoresDados) ? (servida ? 60 : 50) : 0;
                 
                 case Categoria.generala_doble:
-                    return Doble(valoresDados) ? 1 : 0;
+                    return Doble(valoresDados, Tablero) ? (servida ? 120 : 100) : 0;
                 default: return 0;
             }
             
@@ -121,10 +121,10 @@ namespace Generala_DAS
             bool caso2 = ordenados.SequenceEqual(new[] { 2, 3, 4, 5, 6 });
             return caso1 || caso2;
         }
-        private static bool Doble(IReadOnlyList<int> valoresDados)
+        private static bool Doble(IReadOnlyList<int> valoresDados, TABLERO Tablero)
         {
-            //Ver como lo arreglo cuando tenga la clase jugador
-            return true;
+            return (Tablero.DobleHabilitada) && Generala(valoresDados);
+            
         }
 
     }
