@@ -9,7 +9,7 @@ namespace Generala_DAS
     public class CUBILETE
 
     {
-        CUBILETE() 
+        public CUBILETE() 
         {
             for (int i = 0; i <5; i++) { DADO dado = new DADO(); dados.Add(dado);  }
         }
@@ -46,6 +46,14 @@ namespace Generala_DAS
                 dado.Desbloquear();
             } 
             else dado.Bloquear(); 
+        }
+        public void AlternarBloqueo(int indiceDado)
+        {
+            if (dados[indiceDado].Bloqueado)
+            {
+                dados[indiceDado].Desbloquear();
+            }
+            else dados[indiceDado].Bloquear();
         }
         public void Reiniciar()
         {

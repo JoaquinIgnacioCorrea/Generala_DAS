@@ -59,7 +59,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="JUGADOR.cs" />
-    <Compile Include="PARTIDA.cs" />
+    <Compile Include="PARTIDA_GENERALA.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TABLERO.cs" />
@@ -73,7 +73,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="DiagramaClases.cd" />
+    <None Include="AAA Diagrama de Clases.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

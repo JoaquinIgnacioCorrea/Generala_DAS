@@ -25,12 +25,12 @@ namespace Generala_DAS
                 case CATEGORIAS.seises:
                     return CalcularNumero(valoresDados, 6);
 
-                case CATEGORIAS.full:
-                    return Full(valoresDados) ? (servida ? 25 : 20) : 0;
-                case CATEGORIAS.poker:
-                    return Poker(valoresDados) ? (servida ? 35 : 30) : 0;
                 case CATEGORIAS.escalera:
-                    return Generala(valoresDados) ? (servida ? 45 : 40) : 0;
+                    return Escalera(valoresDados) ? (servida ? 25 : 20) : 0;
+                case CATEGORIAS.full:
+                    return Full(valoresDados) ? (servida ? 35 : 30) : 0;
+                case CATEGORIAS.poker:
+                    return Poker(valoresDados) ? (servida ? 45 : 40) : 0;
                 case CATEGORIAS.generala:
                     return Generala(valoresDados) ? (servida ? 60 : 50) : 0;
                 
@@ -60,66 +60,35 @@ namespace Generala_DAS
             int[] frecuencias = new int[7];
             foreach (int i in valoresDados)
             {
-                frecuencias[i]++;
+                if (i >= 1 && i <= 6)
+                {
+                    frecuencias[i]++;
+                }
             }
             return frecuencias;
         }
         private static bool Generala(IReadOnlyList<int> valoresDados)
         {
-            int[] frecuencias= ObtenerFrecuencias(valoresDados);
-            bool generala = false;
-            foreach(int i in frecuencias)
-            {
-                if (frecuencias[i] == 5) 
-                {
-                    generala = true;
-                    break;
-                }
-            }
-
-            return generala;
+            int[] frecuencias = ObtenerFrecuencias(valoresDados);
+            return frecuencias.Any(f => f == 5);
         }
         private static bool Poker(IReadOnlyList<int> valoresDados)
         {
-            int[] frecuencias= ObtenerFrecuencias(valoresDados);
-            bool poker = false;
-            foreach (int i in frecuencias)
-            {
-                if (frecuencias[i] > 4)
-                {
-                    poker = true;
-                    break;
-                }
-            }
-            return poker;
+            int[] frecuencias = ObtenerFrecuencias(valoresDados);
+            return frecuencias.Any(f => f >= 4);
         }
         private static bool Full(IReadOnlyList<int> valoresDados)
         {
-            int[] frecuencias= ObtenerFrecuencias(valoresDados);
-            bool full = false;
-            foreach (int i in frecuencias)
-            {
-                if (frecuencias[i] == 3)
-                {
-                    foreach (int j in frecuencias)
-                    {
-                        if (frecuencias[j] == 2)
-                        {
-                            full = true;
-                            break;
-                        }
-                    }
-                }
-            }
-            return full;
+            int[] frecuencias = ObtenerFrecuencias(valoresDados);
+            return frecuencias.Any(f => f == 3) && frecuencias.Any(f => f == 2);
         }
         private static bool Escalera(IReadOnlyList<int> valoresDados)
         {
-            int[] ordenados = new int[5];
-            ordenados = valoresDados.OrderBy(x => x).ToArray();
-            bool caso1 = ordenados.SequenceEqual(new[] { 1, 2, 3, 4, 5});
+            int[] ordenados = valoresDados.OrderBy(x => x).ToArray();
+            bool caso1 = ordenados.SequenceEqual(new[] { 1, 2, 3, 4, 5 });
             bool caso2 = ordenados.SequenceEqual(new[] { 2, 3, 4, 5, 6 });
-            return caso1 || caso2;
+            bool caso3 = ordenados.SequenceEqual(new[] { 1, 3, 4, 5, 6 }); // común en generala con el 1 como comodín
+            return caso1 || caso2 || caso3;
         }
         private static bool Doble(IReadOnlyList<int> valoresDados, TABLERO Tablero)
         {

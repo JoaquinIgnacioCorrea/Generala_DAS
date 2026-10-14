@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -9,14 +9,13 @@ namespace Generala_DAS
 {
     public class TURNO
     {
-		TURNO(JUGADOR jugadoractual) 
+		public TURNO(JUGADOR jugadoractual) 
 		{
 			jugadorActual = jugadoractual;
-			lanzamientoActual = 1;
+			lanzamientoActual = 0;
 			sePuedeLanzar = true;
 			finalizado = false;
 			servida = true;
-		
 		}
 		private JUGADOR jugadorActual;
 

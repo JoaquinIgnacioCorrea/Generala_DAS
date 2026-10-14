@@ -40,23 +40,24 @@ namespace Generala_DAS
 			get { return casilleros; }
 			set { casilleros = value; }
 		}
-		private bool dobleHabilitada;
-
 		public bool DobleHabilitada
 		{
-			get { return dobleHabilitada; }
-			set { dobleHabilitada = value; }
+			get 
+			{ 
+				return casilleros.ContainsKey(CATEGORIAS.generala) 
+					&& casilleros[CATEGORIAS.generala].Esta_anotado 
+					&& casilleros[CATEGORIAS.generala].Puntaje > 0; 
+			}
 		}
-
 
 		public bool CasilleroDisponible(CATEGORIAS categoria)
 		{
-			return casilleros[categoria].Esta_anotado == false;
+			return casilleros.ContainsKey(categoria) && casilleros[categoria].Esta_anotado == false;
 		}
 
 		public void RegistrarPuntaje(CATEGORIAS categoria, int puntaje)
 		{
-			if (esta_completa && casilleros.ContainsKey(categoria) && CasilleroDisponible(categoria))
+			if (!esta_completa && casilleros.ContainsKey(categoria) && CasilleroDisponible(categoria))
 			{
 				casilleros[categoria].Anotar(puntaje);
 			}
@@ -78,9 +79,6 @@ namespace Generala_DAS
 			esta_completa = casilleros.Values.All(v => v.Esta_anotado == true);
 		}
 
-		private void DobleHabilitada() 
-		{
-			casilleros[CATEGORIAS.generala_doble].Esta_anotado && casilleros[CATEGORIAS.generala_doble].Puntaje > 49 ? dobleHabilitada = true : dobleHabilitada = false;
-		}
+		//private void DobleHabilitada() {}
     }
 }

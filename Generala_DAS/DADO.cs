@@ -23,11 +23,12 @@ namespace Generala_DAS
 			set { bloqueado = value; }
 		}
 
+        private static readonly Random rnd = new Random();
+
 		public void Lanzar()
 		{
 			if (!bloqueado)
 			{
-			Random rnd = new Random();
 				valor = rnd.Next(1, 7);
 			}
 		}
