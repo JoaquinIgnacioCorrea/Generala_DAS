@@ -15,25 +15,60 @@ namespace Generala_DAS
         public IReadOnlyList<JUGADOR> Jugadores => jugadores;
 
         private CUBILETE cubilete;
-        public CUBILETE Cubilete => cubilete;
+
+        public CUBILETE Cubilete
+        {
+            get { return cubilete; }
+            set { cubilete = value; }
+        }
 
         private int indiceJugadorActual;
-        public int IndiceJugadorActual => indiceJugadorActual;
+
+        public int IndiceJugadorActual
+        {
+            get { return indiceJugadorActual; }
+            set { indiceJugadorActual = value; }
+        }
 
         private JUGADOR jugadorActual;
-        public JUGADOR JugadorActual => jugadorActual;
+
+        public JUGADOR JugadorActual
+        {
+            get { return jugadorActual; }
+            set { jugadorActual = value; }
+        }
 
         private TURNO turnoActual;
-        public TURNO TurnoActual => turnoActual;
+
+        public TURNO TurnoActual
+        {
+            get { return turnoActual; }
+            set { turnoActual = value; }
+        }
 
         private int rondaActual;
-        public int RondaActual => rondaActual;
+
+        public int RondaActual
+        {
+            get { return rondaActual; }
+            set { rondaActual = value; }
+        }
 
         private bool partidaFinalizada;
-        public bool PartidaFinalizada => partidaFinalizada;
+
+        public bool PartidaFinalizada
+        {
+            get { return partidaFinalizada; }
+            set { partidaFinalizada = value; }
+        }
 
         private JUGADOR ganador;
-        public JUGADOR Ganador => ganador;
+
+        public JUGADOR Ganador
+        {
+            get { return ganador; }
+            set { ganador = value; }
+        }
 
         public void AgregarJugador(string nombre)
         {
