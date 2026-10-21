@@ -28,13 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.ucTableroPuntaje1 = new Generala_DAS.ucTableroPuntaje();
+            this.SuspendLayout();
+            // 
+            // ucTableroPuntaje1
+            // 
+            this.ucTableroPuntaje1.Location = new System.Drawing.Point(2, 3);
+            this.ucTableroPuntaje1.Name = "ucTableroPuntaje1";
+            this.ucTableroPuntaje1.Size = new System.Drawing.Size(764, 476);
+            this.ucTableroPuntaje1.TabIndex = 0;
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 542);
+            this.Controls.Add(this.ucTableroPuntaje1);
+            this.Name = "Form1";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private ucTableroPuntaje ucTableroPuntaje1;
     }
 }
 

@@ -79,6 +79,18 @@ namespace Generala_DAS
 			esta_completa = casilleros.Values.All(v => v.Esta_anotado == true);
 		}
 
-		//private void DobleHabilitada() {}
+		public int ObtenerPuntaje(CATEGORIAS categoria)
+        {
+            if (casilleros.ContainsKey(categoria) && casilleros[categoria].Esta_anotado)
+            {
+                return casilleros[categoria].Puntaje;
+            }
+            return 0;
+        }
+
+        public bool EstaAnotada(CATEGORIAS categoria)
+        {
+            return casilleros.ContainsKey(categoria) && casilleros[categoria].Esta_anotado;
+        }
     }
 }
