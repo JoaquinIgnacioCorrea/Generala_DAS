@@ -1,6 +1,6 @@
 ﻿namespace Generala_DAS
 {
-    partial class Form1
+    public partial class Form1
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -28,22 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ucTableroPuntaje1 = new Generala_DAS.ucTableroPuntaje();
+            this.ucTableroPuntaje2 = new Generala_DAS.ucTableroPuntaje();
             this.SuspendLayout();
             // 
-            // ucTableroPuntaje1
+            // ucTableroPuntaje2
             // 
-            this.ucTableroPuntaje1.Location = new System.Drawing.Point(2, 3);
-            this.ucTableroPuntaje1.Name = "ucTableroPuntaje1";
-            this.ucTableroPuntaje1.Size = new System.Drawing.Size(764, 476);
-            this.ucTableroPuntaje1.TabIndex = 0;
+            this.ucTableroPuntaje2.Location = new System.Drawing.Point(24, 12);
+            this.ucTableroPuntaje2.Name = "ucTableroPuntaje2";
+            this.ucTableroPuntaje2.Size = new System.Drawing.Size(764, 431);
+            this.ucTableroPuntaje2.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 542);
-            this.Controls.Add(this.ucTableroPuntaje1);
+            this.Controls.Add(this.ucTableroPuntaje2);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -53,6 +53,7 @@
         #endregion
 
         private ucTableroPuntaje ucTableroPuntaje1;
+        private ucTableroPuntaje ucTableroPuntaje2;
     }
 }
 

@@ -25,7 +25,10 @@ namespace Generala_DAS
             
             partida = new PARTIDA_GENERALA();
             partida.AgregarJugador("Jugador 1");
+            partida.AgregarJugador("Jugador 2");
             partida.Iniciar();
+
+            CrearFilas();
         }
 
         private void AsignarTagsADados()
@@ -44,6 +47,15 @@ namespace Generala_DAS
             foreach (string val in valEnum)
             {
                 Tablero.Columns.Add(val, val.Replace("_", ""));
+            }
+        }
+
+        private void CrearFilas()
+        {
+            Tablero.Rows.Clear();
+            foreach (var jugador  in partida.Jugadores)
+            {
+                Tablero.Rows.Add();
             }
         }
 
@@ -148,6 +160,8 @@ namespace Generala_DAS
                     LimpiarInterfazNuevoTurno();
                     MessageBox.Show($"¡Puntaje registrado exitosamente en {categoriaSeleccionada.ToString().Replace("_", " ")}!",
                                     "Turno Finalizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
                 }
                 catch (InvalidOperationException ex)
                 {

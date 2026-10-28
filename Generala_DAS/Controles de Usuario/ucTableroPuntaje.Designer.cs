@@ -48,6 +48,7 @@
             // 
             // Tablero
             // 
+            this.Tablero.AllowUserToAddRows = false;
             this.Tablero.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.Tablero.Location = new System.Drawing.Point(17, 38);
             this.Tablero.Name = "Tablero";
