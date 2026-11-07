@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Windows.Forms;
+using BE;
 
-namespace Generala_DAS
+namespace BLL
 {
     public static class CalculadorPuntaje
     {
-        public static int CalcularPuntaje(CATEGORIAS categoria, IReadOnlyList<int> valoresDados, bool servida, TABLERO Tablero) 
+        private static readonly TABLERO_BLL tablero_bll = new TABLERO_BLL();
+
+        public static int CalcularPuntaje(CATEGORIAS categoria, IReadOnlyList<int> valoresDados, bool servida, TABLERO_BE tablero)
         {
             switch (categoria)
             {
@@ -33,68 +34,77 @@ namespace Generala_DAS
                     return Poker(valoresDados) ? (servida ? 45 : 40) : 0;
                 case CATEGORIAS.generala:
                     return Generala(valoresDados) ? (servida ? 60 : 50) : 0;
-                
                 case CATEGORIAS.generala_doble:
-                    return Doble(valoresDados, Tablero) ? (servida ? 120 : 100) : 0;
-                default: return 0;
+                    return Doble(valoresDados, tablero) ? (servida ? 120 : 100) : 0;
+                default:
+                    return 0;
             }
-            
         }
 
-
-
-
-
-
-        private static int CalcularNumero(IReadOnlyList<int> valoresDados, int ValorACalcular)
+        private static int CalcularNumero(IReadOnlyList<int> valoresDados, int valorACalcular)
         {
             int puntos = 0;
-            foreach (int i in valoresDados) 
+            if (valoresDados != null)
             {
-                if (i == ValorACalcular) { puntos += ValorACalcular;}
+                foreach (int i in valoresDados)
+                {
+                    if (i == valorACalcular)
+                    {
+                        puntos += valorACalcular;
+                    }
+                }
             }
             return puntos;
         }
+
         private static int[] ObtenerFrecuencias(IReadOnlyList<int> valoresDados)
         {
             int[] frecuencias = new int[7];
-            foreach (int i in valoresDados)
+            if (valoresDados != null)
             {
-                if (i >= 1 && i <= 6)
+                foreach (int i in valoresDados)
                 {
-                    frecuencias[i]++;
+                    if (i >= 1 && i <= 6)
+                    {
+                        frecuencias[i]++;
+                    }
                 }
             }
             return frecuencias;
         }
+
         private static bool Generala(IReadOnlyList<int> valoresDados)
         {
             int[] frecuencias = ObtenerFrecuencias(valoresDados);
             return frecuencias.Any(f => f == 5);
         }
+
         private static bool Poker(IReadOnlyList<int> valoresDados)
         {
             int[] frecuencias = ObtenerFrecuencias(valoresDados);
             return frecuencias.Any(f => f >= 4);
         }
+
         private static bool Full(IReadOnlyList<int> valoresDados)
         {
             int[] frecuencias = ObtenerFrecuencias(valoresDados);
             return frecuencias.Any(f => f == 3) && frecuencias.Any(f => f == 2);
         }
+
         private static bool Escalera(IReadOnlyList<int> valoresDados)
         {
+            if (valoresDados == null || valoresDados.Count < 5) return false;
             int[] ordenados = valoresDados.OrderBy(x => x).ToArray();
             bool caso1 = ordenados.SequenceEqual(new[] { 1, 2, 3, 4, 5 });
             bool caso2 = ordenados.SequenceEqual(new[] { 2, 3, 4, 5, 6 });
-            bool caso3 = ordenados.SequenceEqual(new[] { 1, 3, 4, 5, 6 }); // común en generala con el 1 como comodín
+            bool caso3 = ordenados.SequenceEqual(new[] { 1, 3, 4, 5, 6 });
             return caso1 || caso2 || caso3;
         }
-        private static bool Doble(IReadOnlyList<int> valoresDados, TABLERO Tablero)
-        {
-            return (Tablero.DobleHabilitada) && Generala(valoresDados);
-            
-        }
 
+        private static bool Doble(IReadOnlyList<int> valoresDados, TABLERO_BE tablero)
+        {
+            if (tablero == null) return false;
+            return tablero_bll.DobleHabilitada(tablero) && Generala(valoresDados);
+        }
     }
 }

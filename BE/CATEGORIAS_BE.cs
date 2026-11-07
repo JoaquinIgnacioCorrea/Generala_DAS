@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Generala_DAS
+namespace BE
 {
     public enum CATEGORIAS
     {
