@@ -21,7 +21,7 @@ namespace BE
         public int Id_partida
         {
             get { return id_partida; }
-            set { id_partida = value; }
+            internal set { id_partida = value; }
         }
 
         private DateTime fecha;

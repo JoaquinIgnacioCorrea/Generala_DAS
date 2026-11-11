@@ -25,13 +25,24 @@ namespace Generala_DAS
             GC.Collect();
         }
 
-        private SqlCommand CrearComando(string comando_p, List<SqlParameter>parametros = null)
+        private SqlCommand CrearComando(string comando_p, List<SqlParameter>parametro = null)
         {
             SqlCommand comando = new SqlCommand(comando_p, conexion);
             comando.CommandType = CommandType.StoredProcedure;
-            if(parametros != null)
+            if(parametro != null)
             {
-                comando.Parameters.AddRange(parametros.ToArray());
+                comando.Parameters.AddRange(parametro.ToArray());
+            }
+            return comando;
+        }
+
+        private SqlCommand CrearComando(string comando_p, SqlParameter parametro = null)
+        {
+            SqlCommand comando = new SqlCommand(comando_p, conexion);
+            comando.CommandType = CommandType.StoredProcedure;
+            if (parametro != null)
+            {
+                comando.Parameters.Add(parametro);
             }
             return comando;
         }
@@ -65,6 +76,15 @@ namespace Generala_DAS
         }
 
         public int Escribir(string comando_p,List<SqlParameter> parametro = null)
+        {
+            SqlCommand comando = CrearComando(comando_p, parametro);
+            int fila = comando.ExecuteNonQuery();
+            comando.Parameters.Clear();
+            comando.Dispose();
+            return fila;
+        }
+
+        public int Escribir(string comando_p, SqlParameter parametro = null)
         {
             SqlCommand comando = CrearComando(comando_p, parametro);
             int fila = comando.ExecuteNonQuery();
