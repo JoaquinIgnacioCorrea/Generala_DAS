@@ -127,6 +127,8 @@ namespace BLL
 
             partida.PartidaFinalizada = true;
 
+            partida.HoraPartida = DateTime.Now - partida.Fecha;
+
             if (ganadorDirecto != null)
             {
                 partida.Ganador = ganadorDirecto;

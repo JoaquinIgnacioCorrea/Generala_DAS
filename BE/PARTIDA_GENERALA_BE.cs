@@ -13,7 +13,33 @@ namespace BE
             rondaActual = 0;
             indiceJugadorActual = 0;
             partidaFinalizada = false;
+            fecha = DateTime.Now;
         }
+
+        private int id_partida;
+
+        public int Id_partida
+        {
+            get { return id_partida; }
+            set { id_partida = value; }
+        }
+
+        private DateTime fecha;
+
+        public DateTime Fecha
+        {
+            get { return fecha; }
+            set { fecha = value; }
+        }
+
+        private TimeSpan horaPartida;
+
+        public TimeSpan HoraPartida
+        {
+            get { return horaPartida; }
+            set { horaPartida = value; }
+        }
+
 
         private List<JUGADOR_BE> jugadores;
         public List<JUGADOR_BE> Jugadores

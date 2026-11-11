@@ -43,6 +43,20 @@ namespace Generala_DAS
             return parametro;
         }
 
+        public SqlParameter CrearParametro(string nombre, DateTime valor)
+        {
+            SqlParameter parametro = new SqlParameter(nombre, valor);
+            parametro.DbType = DbType.DateTime;
+            return parametro;
+        }
+
+        public SqlParameter CrearParametro(string nombre, TimeSpan valor)
+        {
+            SqlParameter parametro = new SqlParameter(nombre, valor);
+            parametro.DbType = DbType.Time;
+            return parametro;
+        }
+
         public SqlParameter CrearParametro(string nombre, int valor)
         {
             SqlParameter parametro = new SqlParameter(nombre, valor);
@@ -59,11 +73,16 @@ namespace Generala_DAS
             return fila;
         }
 
-        public SqlDataReader Listar(string comando_p, List<SqlParameter> parametro = null)
+        public DataTable Listar(string comando_p, List<SqlParameter> parametro = null)
         {
-            SqlCommand comando = CrearComando(comando_p, parametro);
-            SqlDataReader listado = comando.ExecuteReader();
-            return listado;
+            DataTable tabla = new DataTable();
+            using (SqlDataAdapter data = new SqlDataAdapter())
+            {
+                data.SelectCommand = CrearComando(comando_p, parametro);
+                data.Fill(tabla);
+                data.Dispose();
+            }
+            return tabla;
         }
     }
 }
