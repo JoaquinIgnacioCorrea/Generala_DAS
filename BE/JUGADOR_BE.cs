@@ -7,11 +7,9 @@ namespace BE
 {
     public class JUGADOR_BE
     {
-        public JUGADOR_BE(int id, string nom)
+        public JUGADOR_BE()
         {
             tablero = new TABLERO_BE();
-            id_jugador = id;
-            nombre = nom;
         }
 
         private int id_jugador;

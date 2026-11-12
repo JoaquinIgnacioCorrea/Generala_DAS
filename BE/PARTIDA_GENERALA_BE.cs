@@ -21,7 +21,7 @@ namespace BE
         public int Id_partida
         {
             get { return id_partida; }
-            internal set { id_partida = value; }
+            set { id_partida = value; }
         }
 
         private DateTime fecha;
@@ -32,12 +32,12 @@ namespace BE
             set { fecha = value; }
         }
 
-        private TimeSpan horaPartida;
+        private TimeSpan duracionPartida;
 
-        public TimeSpan HoraPartida
+        public TimeSpan DuracionPartida
         {
-            get { return horaPartida; }
-            set { horaPartida = value; }
+            get { return duracionPartida; }
+            set { duracionPartida = value; }
         }
 
 

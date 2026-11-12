@@ -104,5 +104,17 @@ namespace Generala_DAS
             }
             return tabla;
         }
+
+        public DataTable Listar(string comando_p, SqlParameter parametro = null)
+        {
+            DataTable tabla = new DataTable();
+            using (SqlDataAdapter data = new SqlDataAdapter())
+            {
+                data.SelectCommand = CrearComando(comando_p, parametro);
+                data.Fill(tabla);
+                data.Dispose();
+            }
+            return tabla;
+        }
     }
 }
