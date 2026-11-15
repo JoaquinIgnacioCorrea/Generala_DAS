@@ -1,4 +1,4 @@
-﻿using Generala_DAS;
+using Generala_DAS;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -56,6 +56,7 @@ namespace DAL
             acceso.Cerrar();
 
             List<PARTIDA_GENERALA_BE> partidas = new List<PARTIDA_GENERALA_BE>();
+            MP_JUGADOR mp_jugador = new MP_JUGADOR();
             foreach (DataRow data in tabla.Rows)
             {
                 PARTIDA_GENERALA_BE partida = new PARTIDA_GENERALA_BE();
@@ -68,7 +69,7 @@ namespace DAL
                 if (data["ganador"] != DBNull.Value)
                 {
                     int id_jugador = int.Parse(data["ganador"].ToString());
-                    partida.Ganador = MP_JUGADOR.Listar_Usuario(id_jugador);
+                    partida.Ganador = mp_jugador.Listar_Usuario(id_jugador);
                 }
                 partidas.Add(partida);
             }
@@ -98,7 +99,8 @@ namespace DAL
                 if (data["ganador"] != DBNull.Value)
                 {
                     int id_jugador = int.Parse(data["ganador"].ToString());
-                    partida.Ganador = MP_JUGADOR.Listar_Usuario(id_jugador);
+                    MP_JUGADOR mp_jugador = new MP_JUGADOR();
+                    partida.Ganador = mp_jugador.Listar_Usuario(id_jugador);
                 }
             }
             return partida;
@@ -132,7 +134,8 @@ namespace DAL
                 if (data["ganador"] != DBNull.Value)
                 {
                     int id_jugador = int.Parse(data["ganador"].ToString());
-                    partida.Ganador = MP_JUGADOR.Listar_Usuario(id_jugador);
+                    MP_JUGADOR mp_jugador = new MP_JUGADOR();
+                    partida.Ganador = mp_jugador.Listar_Usuario(id_jugador);
                 }
             }
             return partida;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,7 +36,7 @@ namespace Generala_DAS
             return comando;
         }
 
-        private SqlCommand CrearComando(string comando_p, SqlParameter parametro = null)
+        private SqlCommand CrearComando(string comando_p, SqlParameter parametro)
         {
             SqlCommand comando = new SqlCommand(comando_p, conexion);
             comando.CommandType = CommandType.StoredProcedure;
@@ -84,7 +84,7 @@ namespace Generala_DAS
             return fila;
         }
 
-        public int Escribir(string comando_p, SqlParameter parametro = null)
+        public int Escribir(string comando_p, SqlParameter parametro)
         {
             SqlCommand comando = CrearComando(comando_p, parametro);
             int fila = comando.ExecuteNonQuery();
@@ -116,7 +116,7 @@ namespace Generala_DAS
             return tabla;
         }
 
-        public DataTable Listar(string comando_p, SqlParameter parametro = null)
+        public DataTable Listar(string comando_p, SqlParameter parametro)
         {
             DataTable tabla = new DataTable();
             using (SqlDataAdapter data = new SqlDataAdapter())

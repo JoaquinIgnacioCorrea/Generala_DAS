@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,6 +24,7 @@ namespace Generala_DAS
             CrearColumnas();
             AsignarTagsADados();
             
+            partida_be = new BE.PARTIDA_GENERALA_BE();
             partida_bll = new BLL.PARTIDA_GENERALA_BLL();
             partida_bll.AgregarJugador(partida_be,"Jugador 1");
             partida_bll.AgregarJugador(partida_be,"Jugador 2");

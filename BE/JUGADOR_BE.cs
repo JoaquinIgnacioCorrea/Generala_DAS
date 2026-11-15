@@ -12,6 +12,12 @@ namespace BE
             tablero = new TABLERO_BE();
         }
 
+        public JUGADOR_BE(int idJugador, string nombreJugador) : this()
+        {
+            id_jugador = idJugador;
+            nombre = nombreJugador;
+        }
+
         private int id_jugador;
         public int Id_jugador
         {

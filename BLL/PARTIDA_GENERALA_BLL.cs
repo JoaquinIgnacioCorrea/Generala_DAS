@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using BE;
+using DAL;
 
 namespace BLL
 {
@@ -9,6 +11,7 @@ namespace BLL
         private readonly CUBILETE_BLL cubilete_bll = new CUBILETE_BLL();
         private readonly TURNO_BLL turno_bll = new TURNO_BLL();
         private readonly TABLERO_BLL tablero_bll = new TABLERO_BLL();
+        private readonly XML_MOVIMIENTOS xml_movimientos = new XML_MOVIMIENTOS();
 
         public void AgregarJugador(PARTIDA_GENERALA_BE partida, string nombre)
         {
@@ -28,6 +31,9 @@ namespace BLL
 
             if (partida.Jugadores == null || partida.Jugadores.Count == 0)
                 throw new InvalidOperationException("Debe haber al menos un jugador para iniciar la partida.");
+
+            if (partida.Id_partida <= 0)
+                partida.Id_partida = 1;
 
             partida.RondaActual = 1;
             partida.IndiceJugadorActual = 0;
@@ -56,9 +62,19 @@ namespace BLL
             cubilete_bll.Lanzar(partida.Cubilete);
             turno_bll.RegistrarLanzamiento(partida.TurnoActual);
 
+            // B2.3 - Registrar cada tirada en XML
+            RegistrarMovimientoEnXml(
+                partida,
+                $"Tirada #{partida.TurnoActual.LanzamientoActual}",
+                0);
+
             if (partida.TurnoActual.Servida && CalculadorPuntaje.CalcularPuntaje(CATEGORIAS.generala, partida.Cubilete.Valores, true, partida.JugadorActual.Tablero) > 0)
             {
                 tablero_bll.RegistrarPuntaje(partida.JugadorActual.Tablero, CATEGORIAS.generala, 60);
+
+                // B2.3 - Registrar anotación de Generala Servida en XML
+                RegistrarMovimientoEnXml(partida, CATEGORIAS.generala.ToString(), 60);
+
                 FinalizarPartida(partida, partida.JugadorActual);
             }
         }
@@ -92,8 +108,41 @@ namespace BLL
 
             tablero_bll.RegistrarPuntaje(partida.JugadorActual.Tablero, categoria, puntos);
 
+            // B2.3 - Registrar cada anotación de puntaje en XML antes de avanzar el turno
+            RegistrarMovimientoEnXml(partida, categoria.ToString(), puntos);
+
             turno_bll.Finalizar(partida.TurnoActual);
             AvanzarTurno(partida);
+        }
+
+        private void RegistrarMovimientoEnXml(PARTIDA_GENERALA_BE partida, string categoriaAnotada, int puntajeObtenido)
+        {
+            int idPartida = partida.Id_partida > 0 ? partida.Id_partida : 1;
+            MOVIMIENTO_XML_BE mov = new MOVIMIENTO_XML_BE
+            {
+                IdPartida = idPartida,
+                FechaHora = DateTime.Now,
+                Jugador = partida.JugadorActual != null ? partida.JugadorActual.Nombre : string.Empty,
+                Ronda = partida.RondaActual,
+                ValoresDados = partida.Cubilete != null && partida.Cubilete.Valores != null
+                    ? string.Join("-", partida.Cubilete.Valores)
+                    : string.Empty,
+                CategoriaAnotada = categoriaAnotada,
+                PuntajeObtenido = puntajeObtenido
+            };
+
+            string rutaArchivo = xml_movimientos.ObtenerRutaArchivo(idPartida);
+            xml_movimientos.GuardarMovimiento(mov, rutaArchivo);
+        }
+
+        public List<MOVIMIENTO_XML_BE> LeerMovimientosXml(string rutaArchivo)
+        {
+            return xml_movimientos.LeerMovimientos(rutaArchivo);
+        }
+
+        public string ObtenerCarpetaPartidasXml()
+        {
+            return xml_movimientos.ObtenerCarpetaPartidas();
         }
 
         public void AvanzarTurno(PARTIDA_GENERALA_BE partida)

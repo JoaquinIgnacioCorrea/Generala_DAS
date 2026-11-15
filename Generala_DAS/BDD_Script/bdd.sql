@@ -1,4 +1,4 @@
-USE [Generala]
+﻿USE [Generala]
 GO
 /****** Objeto: Table [dbo].[Jugadas] Fecha de script: 14/11/2026 21:23:55 ******/
 SET ANSI_NULLS ON
@@ -74,7 +74,7 @@ GO
 CREATE TABLE [dbo].[Usuario](
 	[id_usuario] [int] IDENTITY(1,1) NOT NULL,
 	[nombre] [varchar](50) NOT NULL,
-	[contraseña] [varchar](50) NOT NULL,
+	[contraseÃ±a] [varchar](50) NOT NULL,
 	[id_jugador] [int] NOT NULL,
  CONSTRAINT [PK_Usuario] PRIMARY KEY CLUSTERED 
 (
@@ -134,11 +134,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROC [dbo].[alta_usuario]
     @nombre VARCHAR(50),
-    @contraseña VARCHAR(50)
+    @contraseÃ±a VARCHAR(50)
 AS
 BEGIN
-    INSERT INTO Usuario (nombre, contraseña)
-    VALUES (@nombre, @contraseña)
+    INSERT INTO Usuario (nombre, contraseÃ±a)
+    VALUES (@nombre, @contraseÃ±a)
     
     -- Retorna el ID generado para usarlo al crear el Jugador asociado
     SELECT SCOPE_IDENTITY() AS id_usuario
@@ -254,7 +254,7 @@ BEGIN
     INSERT INTO Jugadas (id_jugador, id_partida, hora, puntaje, categoria)
     VALUES (@id_jugador, @id_partida, @hora, @puntaje, @categoria)
     
-    -- Retorna el ID de la jugada generada (útil para la DAL/BLL)
+    -- Retorna el ID de la jugada generada (Ãºtil para la DAL/BLL)
     SELECT SCOPE_IDENTITY() AS id_jugada
 END
 GO
@@ -278,7 +278,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
--- 1. Insertar asociación inicial
+-- 1. Insertar asociaciÃ³n inicial
 CREATE PROC [dbo].[insertar_jugadorxpartida]
     @id_partida INT,
     @id_jugador INT,
@@ -395,13 +395,13 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROC [dbo].[login_usuario]
     @nombre VARCHAR(50),
-    @contraseña VARCHAR(50)
+    @contraseÃ±a VARCHAR(50)
 AS
 BEGIN
     -- Retorna los datos del usuario si las credenciales son correctas
-    SELECT id_usuario, nombre 
+    SELECT id_usuario, nombre, id_jugador 
     FROM Usuario 
-    WHERE nombre = @nombre AND contraseña = @contraseña
+    WHERE nombre = @nombre AND contraseÃ±a = @contraseÃ±a
 END
 GO
 /****** Objeto: StoredProcedure [dbo].[modificar_usuario] Fecha de script: 14/11/2026 21:23:55 ******/
@@ -412,12 +412,12 @@ GO
 CREATE PROC [dbo].[modificar_usuario]
     @id_usuario INT,
     @nombre VARCHAR(50),
-    @contraseña VARCHAR(50)
+    @contraseÃ±a VARCHAR(50)
 AS
 BEGIN
     UPDATE Usuario 
     SET nombre = @nombre,
-        contraseña = @contraseña
+        contraseÃ±a = @contraseÃ±a
     WHERE id_usuario = @id_usuario
 END
 GO
@@ -427,7 +427,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
--- 4. Obtener detalle de un jugador en una partida específica
+-- 4. Obtener detalle de un jugador en una partida especÃ­fica
 CREATE PROC [dbo].[obtener_detalle_jugador_partida]
     @id_partida INT,
     @id_jugador INT
@@ -504,7 +504,7 @@ CREATE PROC [dbo].[obtener_usuario_por_id]
     @id_usuario INT
 AS
 BEGIN
-    SELECT id_usuario, nombre, contraseña, id_jugador 
+    SELECT id_usuario, nombre, contraseÃ±a, id_jugador 
     FROM Usuario 
     WHERE id_usuario = @id_usuario
 END
@@ -522,3 +522,62 @@ BEGIN
     FROM Usuario 
     WHERE nombre = @nombre
 END
+
+GO
+/****** Objeto: Table [dbo].[Bitacora] ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Bitacora](
+	[id_bitacora] [int] IDENTITY(1,1) NOT NULL,
+	[id_jugador] [int] NOT NULL,
+	[fecha] [datetime] NOT NULL,
+	[descripcion] [varchar](100) NOT NULL,
+ CONSTRAINT [PK_Bitacora] PRIMARY KEY CLUSTERED 
+(
+	[id_bitacora] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Bitacora]  WITH CHECK ADD  CONSTRAINT [FK_Bitacora_Jugador] FOREIGN KEY([id_jugador])
+REFERENCES [dbo].[Jugador] ([id_jugador])
+GO
+ALTER TABLE [dbo].[Bitacora] CHECK CONSTRAINT [FK_Bitacora_Jugador]
+GO
+/****** Objeto: StoredProcedure [dbo].[insertar_bitacora] ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROC [dbo].[insertar_bitacora]
+    @id_jugador INT,
+    @fecha DATETIME,
+    @descripcion VARCHAR(100)
+AS
+BEGIN
+    INSERT INTO Bitacora (id_jugador, fecha, descripcion)
+    VALUES (@id_jugador, @fecha, @descripcion)
+
+    SELECT SCOPE_IDENTITY() AS id_bitacora
+END
+GO
+/****** Objeto: StoredProcedure [dbo].[listar_bitacora] ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROC [dbo].[listar_bitacora]
+AS
+BEGIN
+    SELECT 
+        b.id_bitacora, 
+        b.id_jugador, 
+        j.nombre AS usuario, 
+        b.fecha, 
+        b.descripcion
+    FROM Bitacora b
+    LEFT JOIN Jugador j ON b.id_jugador = j.id_jugador
+    ORDER BY b.fecha DESC
+END
+GO
