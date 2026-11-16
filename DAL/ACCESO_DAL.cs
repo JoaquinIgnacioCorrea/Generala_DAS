@@ -104,6 +104,17 @@ namespace Generala_DAS
             return id;
         }
 
+        public int EscribirEscalar(string comando_p, SqlParameter parametro = null)
+        {
+            SqlCommand comando = CrearComando(comando_p, parametro);
+
+            object resultado = comando.ExecuteScalar();
+
+            int id = resultado != null ? int.Parse(resultado.ToString()) : -1;
+
+            return id;
+        }
+
         public DataTable Listar(string comando_p, List<SqlParameter> parametro = null)
         {
             DataTable tabla = new DataTable();

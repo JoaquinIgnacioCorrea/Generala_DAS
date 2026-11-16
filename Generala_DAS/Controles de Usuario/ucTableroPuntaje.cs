@@ -8,14 +8,16 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BE;
+using BLL;
 
 namespace Generala_DAS
 {
     public partial class ucTableroPuntaje : UserControl
     {
 
-        private BE.PARTIDA_GENERALA_BE partida_be;
-        private BLL.PARTIDA_GENERALA_BLL partida_bll;
+        private PARTIDA_GENERALA_BE partida_be;
+        private PARTIDA_GENERALA_BLL partida_bll;
 
 
         public ucTableroPuntaje()
@@ -24,8 +26,8 @@ namespace Generala_DAS
             CrearColumnas();
             AsignarTagsADados();
             
-            partida_be = new BE.PARTIDA_GENERALA_BE();
-            partida_bll = new BLL.PARTIDA_GENERALA_BLL();
+            partida_be = new PARTIDA_GENERALA_BE();
+            partida_bll = new PARTIDA_GENERALA_BLL();
             partida_bll.AgregarJugador(partida_be,"Jugador 1");
             partida_bll.AgregarJugador(partida_be,"Jugador 2");
             partida_bll.Iniciar(partida_be);
@@ -44,7 +46,7 @@ namespace Generala_DAS
 
         private void CrearColumnas()
         {
-            string[] valEnum = Enum.GetNames(typeof(BE.CATEGORIAS));
+            string[] valEnum = Enum.GetNames(typeof(CATEGORIAS));
 
             foreach (string val in valEnum)
             {
@@ -68,7 +70,7 @@ namespace Generala_DAS
                 try
                 {
                     partida_bll.AlternarBloqueo(partida_be,indice);
-                    BE.DADO_BE dadoActual = partida_be.Cubilete.Dados[indice];
+                    DADO_BE dadoActual = partida_be.Cubilete.Dados[indice];
                     dadoClick.BackColor = dadoActual.Bloqueado ? Color.Red : SystemColors.Control;
                 }
                 catch (InvalidOperationException ex)
@@ -102,7 +104,7 @@ namespace Generala_DAS
             {
                 for (int i = 0; i < partida_be.Cubilete.Dados.Count; i++)
                 {
-                    BE.DADO_BE dado = partida_be.Cubilete.Dados[i];
+                    DADO_BE dado = partida_be.Cubilete.Dados[i];
 
                     if (!dado.Bloqueado)
                     {
@@ -126,7 +128,7 @@ namespace Generala_DAS
         {
             for (int i = 0; i < partida_be.Cubilete.Dados.Count; i++)
             {
-                BE.DADO_BE dado = partida_be.Cubilete.Dados[i];
+                DADO_BE dado = partida_be.Cubilete.Dados[i];
                 Control[] encontrados = this.Controls.Find($"dado{i + 1}", true);
 
                 if (encontrados.Length > 0 && encontrados[0] is PictureBox pbDado)
@@ -149,15 +151,15 @@ namespace Generala_DAS
 
             string nombreColumna = Tablero.CurrentCell.OwningColumn.Name;
 
-            if (Enum.TryParse(nombreColumna, out BE.CATEGORIAS categoriaSeleccionada))
+            if (Enum.TryParse(nombreColumna, out CATEGORIAS categoriaSeleccionada))
             {
                 try
                 {
                     int filaIndex = partida_be.IndiceJugadorActual;
                     partida_bll.AnotarJugada(partida_be, categoriaSeleccionada);
 
-                    BE.TABLERO_BE tablero_be = partida_be.Jugadores[filaIndex].Tablero;
-                    BLL.TABLERO_BLL tablero_bll= new BLL.TABLERO_BLL();
+                    TABLERO_BE tablero_be = partida_be.Jugadores[filaIndex].Tablero;
+                    TABLERO_BLL tablero_bll= new BLL.TABLERO_BLL();
                     int puntosAnotados = tablero_bll.ObtenerPuntaje(tablero_be, categoriaSeleccionada);
                     Tablero.Rows[filaIndex].Cells[nombreColumna].Value = puntosAnotados;
 

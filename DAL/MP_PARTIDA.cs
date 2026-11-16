@@ -23,8 +23,9 @@ namespace DAL
             parametros.Add(acceso.CrearParametro("@fecha_partida", partida_p.Fecha));
             parametros.Add(acceso.CrearParametro("@tiempo_partida", TimeSpan.Zero));
             acceso.Abrir();
-            acceso.Escribir("insertar_partida", parametros);
+            int id = acceso.EscribirEscalar("insertar_partida", parametros);
             acceso.Cerrar();
+            partida_p.Id_partida = id;
         }
 
         public void Editar(PARTIDA_GENERALA_BE partida_p)
