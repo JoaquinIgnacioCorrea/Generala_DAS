@@ -1,39 +1,36 @@
+﻿using BE;
+using BLL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BE;
-using BLL;
 
 namespace Generala_DAS
 {
-    public partial class ucTableroPuntaje : UserControl
+    public partial class frmJuego : Form
     {
-
-        private PARTIDA_GENERALA_BE partida_be;
-        private PARTIDA_GENERALA_BLL partida_bll;
-
-
-        public ucTableroPuntaje()
+        public frmJuego()
         {
             InitializeComponent();
             CrearColumnas();
             AsignarTagsADados();
-            
+
             partida_be = new PARTIDA_GENERALA_BE();
             partida_bll = new PARTIDA_GENERALA_BLL();
-            partida_bll.AgregarJugador(partida_be,"Jugador 1");
-            partida_bll.AgregarJugador(partida_be,"Jugador 2");
+            partida_bll.AgregarJugador(partida_be, "Jugador 1");
+            partida_bll.AgregarJugador(partida_be, "Jugador 2");
             partida_bll.Iniciar(partida_be);
 
             CrearFilas();
         }
+
+        private PARTIDA_GENERALA_BE partida_be;
+        private PARTIDA_GENERALA_BLL partida_bll;
 
         private void AsignarTagsADados()
         {
@@ -57,7 +54,7 @@ namespace Generala_DAS
         private void CrearFilas()
         {
             Tablero.Rows.Clear();
-            foreach (var jugador  in partida_be.Jugadores)
+            foreach (var jugador in partida_be.Jugadores)
             {
                 Tablero.Rows.Add();
             }
@@ -69,7 +66,7 @@ namespace Generala_DAS
             {
                 try
                 {
-                    partida_bll.AlternarBloqueo(partida_be,indice);
+                    partida_bll.AlternarBloqueo(partida_be, indice);
                     DADO_BE dadoActual = partida_be.Cubilete.Dados[indice];
                     dadoClick.BackColor = dadoActual.Bloqueado ? Color.Red : SystemColors.Control;
                 }
@@ -108,7 +105,7 @@ namespace Generala_DAS
 
                     if (!dado.Bloqueado)
                     {
-                        partida_bll.AlternarBloqueo(partida_be,i);
+                        partida_bll.AlternarBloqueo(partida_be, i);
 
                         Control[] encontrados = this.Controls.Find($"dado{i + 1}", true);
                         if (encontrados.Length > 0 && encontrados[0] is PictureBox pbDado)
@@ -159,7 +156,7 @@ namespace Generala_DAS
                     partida_bll.AnotarJugada(partida_be, categoriaSeleccionada);
 
                     TABLERO_BE tablero_be = partida_be.Jugadores[filaIndex].Tablero;
-                    TABLERO_BLL tablero_bll= new BLL.TABLERO_BLL();
+                    TABLERO_BLL tablero_bll = new BLL.TABLERO_BLL();
                     int puntosAnotados = tablero_bll.ObtenerPuntaje(tablero_be, categoriaSeleccionada);
                     Tablero.Rows[filaIndex].Cells[nombreColumna].Value = puntosAnotados;
 
@@ -201,7 +198,5 @@ namespace Generala_DAS
             }
         }
 
-
     }
-
 }

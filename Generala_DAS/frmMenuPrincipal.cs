@@ -21,6 +21,7 @@ namespace Generala_DAS
 
         private void frmMenuPrincipal_Load(object sender, EventArgs e)
         {
+            if(idJugadorActual == 0) MostrarLogin();
             if (idJugadorActual > 0)
             {
                 try
@@ -29,14 +30,33 @@ namespace Generala_DAS
                 }
                 catch
                 {
-                    // Evita bloquear la apertura del menú si la BD no está disponible aún
+                    
                 }
             }
         }
 
+        private void MostrarLogin()
+        {
+            this.Hide();
+
+            using(frmLogin login = new frmLogin())
+            {
+                if(login.ShowDialog() == DialogResult.OK)
+                {
+
+                    this.Show();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
+
+        }
+
         private void btnJugar_Click(object sender, EventArgs e)
         {
-            using (Form1 frmPartida = new Form1())
+            using (frmJuego frmPartida = new frmJuego())
             {
                 frmPartida.ShowDialog(this);
             }

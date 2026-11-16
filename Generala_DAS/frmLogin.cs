@@ -1,24 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows.Forms;
 using BE;
 using BLL;
 
-namespace Generala_DAS.Controles_de_Usuario
+namespace Generala_DAS
 {
-    public partial class ucLogin : UserControl
+    public partial class frmLogin : Form
     {
-        public ucLogin()
+        public frmLogin()
         {
             InitializeComponent();
         }
-
         USUARIO_BLL usuario_bll;
         USUARIO_BE usuario_be;
 
@@ -29,10 +21,20 @@ namespace Generala_DAS.Controles_de_Usuario
             if (ValidarCamposLlenos())
             {
                 string nombre = tb_nombre_usuario.Text;
-                string pass = tb_pass.Text;
+                string pass = tb_contraseña.Text;
                 usuario_be = usuario_bll.RegistrarUsuario(nombre, pass);
-                if (usuario_be != null) LimpiarCampos();
+                if (usuario_be != null)
+                {
+                    LimpiarCampos();
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
                 else tb_nombre_usuario.Text = "";
+            }
+            else
+            {
+                Mensaje("Los campos no pueden estar vacios");
+                return;
             }
             Mensaje(usuario_be != null ? "Se registro el usuario" : "El nombre de usuario ya esta en uso");
         }
@@ -46,7 +48,17 @@ namespace Generala_DAS.Controles_de_Usuario
                 string nombre = tb_nombre_usuario.Text;
                 string pass = tb_pass.Text;
                 usuario_be = usuario_bll.IniciarSesion(nombre, pass);
-                if (usuario_be != null) LimpiarCampos();
+                if (usuario_be != null)
+                {
+                    LimpiarCampos();
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+            }
+            else
+            {
+                Mensaje("Los campos no pueden estar vacios");
+                return;
             }
             Mensaje(usuario_be != null ? "Se logeo correctamente" : "Usuario y contraseña incorrectos");
         }
