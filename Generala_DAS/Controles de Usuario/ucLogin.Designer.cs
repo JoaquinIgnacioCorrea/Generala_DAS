@@ -1,4 +1,4 @@
-﻿namespace Generala_DAS.Controles_de_Usuario
+namespace Generala_DAS.Controles_de_Usuario
 {
     partial class ucLogin
     {
@@ -33,7 +33,7 @@
             this.btn_registrarse = new System.Windows.Forms.Button();
             this.btn_iniciar_sesion = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.tb_contraseña = new System.Windows.Forms.Label();
+            this.tb_pass = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -80,14 +80,14 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Nombre Usuario";
             // 
-            // tb_contraseña
+            // tb_pass
             // 
-            this.tb_contraseña.AutoSize = true;
-            this.tb_contraseña.Location = new System.Drawing.Point(261, 214);
-            this.tb_contraseña.Name = "tb_contraseña";
-            this.tb_contraseña.Size = new System.Drawing.Size(61, 13);
-            this.tb_contraseña.TabIndex = 5;
-            this.tb_contraseña.Text = "Contraseña";
+            this.tb_pass.AutoSize = true;
+            this.tb_pass.Location = new System.Drawing.Point(261, 214);
+            this.tb_pass.Name = "tb_pass";
+            this.tb_pass.Size = new System.Drawing.Size(61, 13);
+            this.tb_pass.TabIndex = 5;
+            this.tb_pass.Text = "Contraseña";
             // 
             // label3
             // 
@@ -104,7 +104,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.tb_contraseña);
+            this.Controls.Add(this.tb_pass);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_iniciar_sesion);
             this.Controls.Add(this.btn_registrarse);
@@ -124,7 +124,7 @@
         private System.Windows.Forms.Button btn_registrarse;
         private System.Windows.Forms.Button btn_iniciar_sesion;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label tb_contraseña;
+        private System.Windows.Forms.Label tb_pass;
         private System.Windows.Forms.Label label3;
     }
 }

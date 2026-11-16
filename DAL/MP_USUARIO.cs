@@ -17,7 +17,7 @@ namespace DAL
             List<SqlParameter> parametros = new List<SqlParameter>
             {
                 acceso.CrearParametro("@nombre", usuario),
-                acceso.CrearParametro("@contraseña", pass)
+                acceso.CrearParametro("@pass", pass)
             };
 
             acceso.Abrir();
@@ -47,7 +47,7 @@ namespace DAL
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 acceso.CrearParametro("@nombre",usuario_p.Usuario),
-                acceso.CrearParametro("@contraseña",usuario_p.Pass)
+                acceso.CrearParametro("@pass",usuario_p.Pass)
             };
             acceso.Abrir();
             int id = acceso.EscribirEscalar("alta_usuario", parametros);
@@ -71,7 +71,7 @@ namespace DAL
             {
                 acceso.CrearParametro("@id_usuario",id),
                 acceso.CrearParametro("@nombre",nombre),
-                acceso.CrearParametro("@contraseña",password)
+                acceso.CrearParametro("@pass",password)
             };
             acceso.Abrir();
             acceso.Escribir("modificar_usuario", parametros);
@@ -84,7 +84,7 @@ namespace DAL
             {
                 acceso.CrearParametro("@id_usuario",usuario_p.ID),
                 acceso.CrearParametro("@nombre",usuario_p.Usuario),
-                acceso.CrearParametro("@contraseña",usuario_p.Pass)
+                acceso.CrearParametro("@pass",usuario_p.Pass)
             };
             acceso.Abrir();
             acceso.Escribir("modificar_usuario", parametros);

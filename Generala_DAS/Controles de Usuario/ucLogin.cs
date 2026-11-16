@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -29,8 +29,8 @@ namespace Generala_DAS.Controles_de_Usuario
             if (ValidarCamposLlenos())
             {
                 string nombre = tb_nombre_usuario.Text;
-                string contraseña = tb_contraseña.Text;
-                usuario_be = usuario_bll.RegistrarUsuario(nombre, contraseña);
+                string pass = tb_pass.Text;
+                usuario_be = usuario_bll.RegistrarUsuario(nombre, pass);
                 if (usuario_be != null) LimpiarCampos();
                 else tb_nombre_usuario.Text = "";
             }
@@ -44,8 +44,8 @@ namespace Generala_DAS.Controles_de_Usuario
             if (ValidarCamposLlenos())
             {
                 string nombre = tb_nombre_usuario.Text;
-                string contraseña = tb_contraseña.Text;
-                usuario_be = usuario_bll.IniciarSesion(nombre, contraseña);
+                string pass = tb_pass.Text;
+                usuario_be = usuario_bll.IniciarSesion(nombre, pass);
                 if (usuario_be != null) LimpiarCampos();
             }
             Mensaje(usuario_be != null ? "Se logeo correctamente" : "Usuario y contraseña incorrectos");
@@ -54,12 +54,12 @@ namespace Generala_DAS.Controles_de_Usuario
         private void LimpiarCampos()
         {
             tb_nombre_usuario.Text = "";
-            tb_contraseña.Text = "";
+            tb_pass.Text = "";
         }
 
         private bool ValidarCamposLlenos()
         {
-            return tb_nombre_usuario.Text != "" && tb_contraseña.Text != "";
+            return tb_nombre_usuario.Text != "" && tb_pass.Text != "";
         }
 
         private void Mensaje(string msj)

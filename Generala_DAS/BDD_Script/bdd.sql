@@ -1,4 +1,4 @@
-USE [Generala]
+﻿USE [Generala]
 GO
 /****** Objeto: Table [dbo].[Jugadas] Fecha de script: 15/11/2026 23:08:40 ******/
 SET ANSI_NULLS ON
@@ -74,7 +74,7 @@ GO
 CREATE TABLE [dbo].[Usuario](
 	[id_usuario] [int] IDENTITY(1,1) NOT NULL,
 	[nombre] [varchar](50) NOT NULL,
-	[contraseña] [varchar](50) NOT NULL,
+	[pass] [varchar](50) NOT NULL,
 	[id_jugador] [int] NOT NULL,
  CONSTRAINT [PK_Usuario] PRIMARY KEY CLUSTERED 
 (
@@ -134,11 +134,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROC [dbo].[alta_usuario]
     @nombre VARCHAR(50),
-    @contraseña VARCHAR(50)
+    @pass VARCHAR(50)
 AS
 BEGIN
-    INSERT INTO Usuario (nombre, contraseña)
-    VALUES (@nombre, @contraseña)
+    INSERT INTO Usuario (nombre, pass)
+    VALUES (@nombre, @pass)
     
     -- Retorna el ID generado para usarlo al crear el Jugador asociado
     SELECT SCOPE_IDENTITY() AS id_usuario
@@ -395,13 +395,13 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROC [dbo].[login_usuario]
     @nombre VARCHAR(50),
-    @contraseña VARCHAR(50)
+    @pass VARCHAR(50)
 AS
 BEGIN
     -- Retorna los datos del usuario si las credenciales son correctas
     SELECT id_usuario, nombre 
     FROM Usuario 
-    WHERE nombre = @nombre AND contraseña = @contraseña
+    WHERE nombre = @nombre AND pass = @pass
 END
 GO
 /****** Objeto: StoredProcedure [dbo].[modificar_usuario] Fecha de script: 15/11/2026 23:08:40 ******/
@@ -412,12 +412,12 @@ GO
 CREATE PROC [dbo].[modificar_usuario]
     @id_usuario INT,
     @nombre VARCHAR(50),
-    @contraseña VARCHAR(50)
+    @pass VARCHAR(50)
 AS
 BEGIN
     UPDATE Usuario 
     SET nombre = @nombre,
-        contraseña = @contraseña
+        pass = @pass
     WHERE id_usuario = @id_usuario
 END
 GO
@@ -504,7 +504,7 @@ CREATE PROC [dbo].[obtener_usuario_por_id]
     @id_usuario INT
 AS
 BEGIN
-    SELECT id_usuario, nombre, contraseña, id_jugador 
+    SELECT id_usuario, nombre, pass, id_jugador 
     FROM Usuario 
     WHERE id_usuario = @id_usuario
 END
