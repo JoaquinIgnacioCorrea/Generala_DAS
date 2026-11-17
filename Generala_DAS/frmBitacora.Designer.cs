@@ -1,6 +1,6 @@
 namespace Generala_DAS
 {
-    partial class frmBitacora
+    public partial class frmBitacora
     {
         private System.ComponentModel.IContainer components = null;
 

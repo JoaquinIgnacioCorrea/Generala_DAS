@@ -14,21 +14,19 @@ namespace DAL
     {
         private ACCESO acceso;
 
-        // INSERTAR JUGADOR
-        public void Insertar(JUGADOR_BE jugador)
+        public int Insertar(string nombre)
         {
             acceso = new ACCESO();
             List<SqlParameter> parametros = new List<SqlParameter>();
 
-            // Asumiendo campos estándar de un jugador (nombre, usuario, etc.)
-            parametros.Add(acceso.CrearParametro("@nombre", jugador.Nombre));
+            parametros.Add(acceso.CrearParametro("@nombre", nombre));
 
             acceso.Abrir();
-            acceso.Escribir("insertar_jugador", parametros);
+            int id = acceso.EscribirEscalar("insertar_jugador", parametros);
             acceso.Cerrar();
+            return id;
         }
 
-        // EDITAR JUGADOR
         public void Editar(JUGADOR_BE jugador)
         {
             acceso = new ACCESO();
@@ -42,7 +40,6 @@ namespace DAL
             acceso.Cerrar();
         }
 
-        // BORRAR JUGADOR
         public void Borrar(JUGADOR_BE jugador)
         {
             acceso = new ACCESO();
@@ -55,7 +52,6 @@ namespace DAL
             acceso.Cerrar();
         }
 
-        // OBTENER JUGADOR POR ID (Fundamental para reconstruir objetos relacionados)
         public JUGADOR_BE Listar_Usuario(int id_jugador)
         {
             acceso = new ACCESO();
@@ -71,12 +67,10 @@ namespace DAL
                 jugador = new JUGADOR_BE();
                 jugador.Id_jugador = int.Parse(data["id_jugador"].ToString());
                 jugador.Nombre = data["nombre"].ToString();
-                // Mapear el resto de propiedades de tu BE si las hubiera
             }
             return jugador;
         }
 
-        // LISTAR TODOS LOS JUGADORES (Útil para selección general en la interfaz)
         public List<JUGADOR_BE> ListarTodos()
         {
             acceso = new ACCESO();
@@ -85,7 +79,7 @@ namespace DAL
             DataTable tabla = acceso.Listar("listar_todos_jugadores");
             acceso.Cerrar();
 
-            List<JUGADOR_BE> listaJugadores = new List<JUGADOR_BE>(); // Ajustar nombre de clase BE si difiere
+            List<JUGADOR_BE> listaJugadores = new List<JUGADOR_BE>();
             foreach (DataRow data in tabla.Rows)
             {
                 JUGADOR_BE jugador = new JUGADOR_BE();

@@ -1,24 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using BE;
+﻿using BE;
 using BLL;
+using System;
 
-namespace Generala_DAS.Controles_de_Usuario
+using System.Windows.Forms;
+
+namespace Generala_DAS
 {
-    public partial class ucLogin : UserControl
+    public partial class frmLoginUsuario : Form
     {
-        public ucLogin()
+        public frmLoginUsuario()
         {
             InitializeComponent();
         }
-
         USUARIO_BLL usuario_bll;
         USUARIO_BE usuario_be;
 
@@ -29,10 +22,20 @@ namespace Generala_DAS.Controles_de_Usuario
             if (ValidarCamposLlenos())
             {
                 string nombre = tb_nombre_usuario.Text;
-                string pass = tb_pass.Text;
+                string pass = tb_contraseña.Text;
                 usuario_be = usuario_bll.RegistrarUsuario(nombre, pass);
-                if (usuario_be != null) LimpiarCampos();
+                if (usuario_be != null)
+                {
+                    LimpiarCampos();
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
                 else tb_nombre_usuario.Text = "";
+            }
+            else
+            {
+                Mensaje("Los campos no pueden estar vacios");
+                return;
             }
             Mensaje(usuario_be != null ? "Se registro el usuario" : "El nombre de usuario ya esta en uso");
         }
@@ -44,9 +47,19 @@ namespace Generala_DAS.Controles_de_Usuario
             if (ValidarCamposLlenos())
             {
                 string nombre = tb_nombre_usuario.Text;
-                string pass = tb_pass.Text;
+                string pass = tb_contraseña.Text;
                 usuario_be = usuario_bll.IniciarSesion(nombre, pass);
-                if (usuario_be != null) LimpiarCampos();
+                if (usuario_be != null)
+                {
+                    LimpiarCampos();
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+            }
+            else
+            {
+                Mensaje("Los campos no pueden estar vacios");
+                return;
             }
             Mensaje(usuario_be != null ? "Se logeo correctamente" : "Usuario y contraseña incorrectos");
         }
@@ -54,12 +67,12 @@ namespace Generala_DAS.Controles_de_Usuario
         private void LimpiarCampos()
         {
             tb_nombre_usuario.Text = "";
-            tb_pass.Text = "";
+            lbl_contraseña.Text = "";
         }
 
         private bool ValidarCamposLlenos()
         {
-            return tb_nombre_usuario.Text != "" && tb_pass.Text != "";
+            return tb_nombre_usuario.Text != "" && lbl_contraseña.Text != "";
         }
 
         private void Mensaje(string msj)

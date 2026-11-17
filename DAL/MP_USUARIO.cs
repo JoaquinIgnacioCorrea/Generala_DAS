@@ -44,10 +44,12 @@ namespace DAL
         public void Insertar(USUARIO_BE usuario_p)
         {
             acceso = new ACCESO();
+            int id_jugador = new MP_JUGADOR().Insertar(usuario_p.Usuario);
             List<SqlParameter> parametros = new List<SqlParameter>()
             {
                 acceso.CrearParametro("@nombre",usuario_p.Usuario),
-                acceso.CrearParametro("@pass",usuario_p.Pass)
+                acceso.CrearParametro("@pass",usuario_p.Pass),
+                acceso.CrearParametro("@id_jugador",id_jugador)
             };
             acceso.Abrir();
             int id = acceso.EscribirEscalar("alta_usuario", parametros);

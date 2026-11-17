@@ -1,3 +1,5 @@
+using BE;
+using BLL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,38 +8,51 @@ using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BE;
-using BLL;
 
 namespace Generala_DAS
 {
-    public partial class ucTableroPuntaje : UserControl
+    public partial class frmJuego : Form
     {
-
         private PARTIDA_GENERALA_BE partida_be;
         private PARTIDA_GENERALA_BLL partida_bll;
         private ServidorGenerala enlace;
         private int miIndice;
         private TABLERO_BLL tablerobll = new TABLERO_BLL();
 
-
-        public ucTableroPuntaje()
+        public frmJuego()
         {
             InitializeComponent();
             CrearColumnas();
             AsignarTagsADados();
-            
+
             partida_be = new PARTIDA_GENERALA_BE();
             partida_bll = new PARTIDA_GENERALA_BLL();
-            partida_bll.AgregarJugador(partida_be,"Jugador 1");
-            partida_bll.AgregarJugador(partida_be,"Jugador 2");
+            partida_bll.AgregarJugador(partida_be, "Jugador 1");
+            partida_bll.AgregarJugador(partida_be, "Jugador 2");
             partida_bll.Iniciar(partida_be);
 
             CrearFilas();
+        }
+
+        public frmJuego(ServidorGenerala e) : this()
+        {
+            enlace = e;
+        }
+
+        private void frmJuego_Load(object sender, EventArgs e)
+        {
+            if (enlace != null)
+            {
+                ConfigurarRed(enlace);
+            }
+        }
+
+        private void frmJuego_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            enlace?.cerrar();
         }
 
         private void AsignarTagsADados()
@@ -62,7 +77,7 @@ namespace Generala_DAS
         private void CrearFilas()
         {
             Tablero.Rows.Clear();
-            foreach (var jugador  in partida_be.Jugadores)
+            foreach (var jugador in partida_be.Jugadores)
             {
                 Tablero.Rows.Add();
             }
@@ -75,10 +90,12 @@ namespace Generala_DAS
                 EnviarAccion("BLOQUEAR;" + indice);
             }
         }
+
         private void btn_tirar_dados_Click(object sender, EventArgs e)
         {
             EnviarAccion("TIRAR");
         }
+
         private void btn_bloquear_dados_Click(object sender, EventArgs e)
         {
             BloquearTodosLosDadosLibres();
@@ -86,16 +103,13 @@ namespace Generala_DAS
 
         public void BloquearTodosLosDadosLibres()
         {
-            
-                for (int i = 0; i < partida_be.Cubilete.Dados.Count; i++)
+            for (int i = 0; i < partida_be.Cubilete.Dados.Count; i++)
+            {
+                if (!partida_be.Cubilete.Dados[i].Bloqueado)
                 {
-                    if (!partida_be.Cubilete.Dados[i].Bloqueado)
-                    {
-                        EnviarAccion("BLOQUEAR;" + i);
-                    }
+                    EnviarAccion("BLOQUEAR;" + i);
                 }
-            
-            
+            }
         }
 
         private void ActualizarInterfazDados()
@@ -127,7 +141,7 @@ namespace Generala_DAS
 
             if (Enum.TryParse(nombreColumna, out CATEGORIAS categoriaSeleccionada))
             {
-                EnviarAccion("ANOTAR;"+ categoriaSeleccionada);
+                EnviarAccion("ANOTAR;" + categoriaSeleccionada);
             }
             else
             {
@@ -136,15 +150,15 @@ namespace Generala_DAS
             }
         }
 
-       
         public void ConfigurarRed(ServidorGenerala e)
         {
             enlace = e;
-            miIndice = enlace.Host? 0 :1;
+            miIndice = enlace.Host ? 0 : 1;
             enlace.MensajeRecibido += AlRecibirMensaje;
             enlace.EmpezarAEscuchar();
             if (enlace.Host) { HostEjecutar(null, 0); }
         }
+
         private string TableroATexto(TABLERO_BE t)
         {
             List<string> partes = new List<string>();
@@ -154,15 +168,15 @@ namespace Generala_DAS
                 {
                     partes.Add(cat + ":" + tablerobll.ObtenerPuntaje(t, cat));
                 }
-
             }
-                return string.Join(",", partes);
+            return string.Join(",", partes);
         }
+
         private string SerializarEstado()
         {
             List<DADO_BE> dados = partida_be.Cubilete.Dados;
             string valores = string.Join(",", dados.Select(d => d.Valor));
-            string bloqueos = string.Join(",", dados.Select(d=> d.Bloqueado? 1:0));
+            string bloqueos = string.Join(",", dados.Select(d => d.Bloqueado ? 1 : 0));
 
             int turno = partida_be.IndiceJugadorActual;
             int puedelanzar = partida_be.TurnoActual.SePuedeLanzar ? 1 : 0;
@@ -171,8 +185,8 @@ namespace Generala_DAS
             string t1 = TableroATexto(partida_be.Jugadores[1].Tablero);
 
             return $"ESTADO;{valores};{bloqueos};{turno};{puedelanzar};{fin};{t0};{t1}";
-
         }
+
         private void ProcesarComando(string comando, int quienPide)
         {
             if (partida_be.IndiceJugadorActual != quienPide)
@@ -181,7 +195,7 @@ namespace Generala_DAS
             }
             string[] partes = comando.Split(';');
 
-            switch (partes[0]) 
+            switch (partes[0])
             {
                 case "TIRAR":
                     partida_bll.TirarDados(partida_be);
@@ -196,6 +210,7 @@ namespace Generala_DAS
                 default: throw new InvalidOperationException("No se reconocio el comando");
             }
         }
+
         private void HostEjecutar(string comando, int quienPide)
         {
             try
@@ -208,9 +223,9 @@ namespace Generala_DAS
                 enlace?.Enviar(estado);
                 AplicarEstado(estado);
             }
-            catch(InvalidOperationException ex)
+            catch (InvalidOperationException ex)
             {
-                if (enlace !=null && quienPide != miIndice)
+                if (enlace != null && quienPide != miIndice)
                 {
                     enlace.Enviar("ERROR;" + ex.Message);
                 }
@@ -219,7 +234,6 @@ namespace Generala_DAS
                     MessageBox.Show(ex.Message, "Accion no permitida.");
                 }
             }
-
         }
 
         private void EnviarAccion(string comando)
@@ -237,17 +251,18 @@ namespace Generala_DAS
                 enlace.Enviar(comando);
             }
         }
+
         private void AplicarEstado(string estado)
         {
             string[] s = estado.Split(';');
 
             int[] valores = s[1].Split(',').Select(int.Parse).ToArray();
-            bool[] bloqueos = s[2].Split(',').Select(x=> x == "1").ToArray();
+            bool[] bloqueos = s[2].Split(',').Select(x => x == "1").ToArray();
             int turno = int.Parse(s[3]);
             bool puede = s[4] == "1";
             bool fin = s[5] == "1";
 
-            for (int i=0; i<5; i++)
+            for (int i = 0; i < 5; i++)
             {
                 partida_be.Cubilete.Dados[i].Valor = valores[i];
                 partida_be.Cubilete.Dados[i].Bloqueado = bloqueos[i];
@@ -268,8 +283,8 @@ namespace Generala_DAS
             {
                 MessageBox.Show("Partida Finalizada");
             }
-
         }
+
         private void CargarFilas(int fila, string texto)
         {
             string[] s = texto.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -279,6 +294,7 @@ namespace Generala_DAS
                 Tablero.Rows[fila].Cells[cat[0]].Value = cat[1];
             }
         }
+
         private void AlRecibirMensaje(string mensaje)
         {
             if (this.IsDisposed || this.Disposing || !this.IsHandleCreated)
@@ -294,7 +310,6 @@ namespace Generala_DAS
                 if (enlace.Host)
                 {
                     HostEjecutar(mensaje, 1);
-                    
                 }
                 else if (mensaje.StartsWith("ESTADO"))
                 {
@@ -304,17 +319,7 @@ namespace Generala_DAS
                 {
                     MessageBox.Show(mensaje.Split(';')[1]);
                 }
-            }
-                )
-                );
+            }));
         }
-
-
-
-
-
-
-    
     }
-
 }

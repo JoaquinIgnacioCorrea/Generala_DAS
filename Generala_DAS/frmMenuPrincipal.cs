@@ -26,6 +26,7 @@ namespace Generala_DAS
 
         private void frmMenuPrincipal_Load(object sender, EventArgs e)
         {
+            if(idJugadorActual == 0) MostrarLogin();
             if (idJugadorActual > 0)
             {
                 try
@@ -39,9 +40,27 @@ namespace Generala_DAS
             }
         }
 
+        private void MostrarLogin()
+        {
+            this.Hide();
+
+            using(frmLoginUsuario login = new frmLoginUsuario())
+            {
+                if(login.ShowDialog() == DialogResult.OK)
+                {
+                    this.Show();
+                }
+                else
+                {
+                    Application.Exit();
+                }
+            }
+
+        }
+
         private void btnJugar_Click(object sender, EventArgs e)
         {
-            using (Form1 frmPartida = new Form1())
+            using (frmJuego frmPartida = new frmJuego())
             {
                 frmPartida.ShowDialog(this);
             }
@@ -110,7 +129,7 @@ namespace Generala_DAS
             
             btnHostear.Text = "rival conectado!";
             btnHostear.BackColor = System.Drawing.Color.Green;
-            using(Form1 frm = new Form1(enlace))
+            using(frmJuego frm = new frmJuego(enlace))
             {
                 frm.ShowDialog(this);
             }
@@ -135,7 +154,7 @@ namespace Generala_DAS
                 
                 btnUnirse.BackColor = Color.Green;
                 btnUnirse.Text = "Exito!";
-                using (Form1 frm = new Form1(enlace)) { frm.ShowDialog(this); }
+                using (frmJuego frm = new frmJuego(enlace)) { frm.ShowDialog(this); }
                     
 
             }
