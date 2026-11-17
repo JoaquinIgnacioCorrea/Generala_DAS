@@ -1,7 +1,12 @@
 using System;
+using System.Drawing;
+using System.Net.Sockets;
+using System.Runtime.Remoting;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using BE;
 using BLL;
+
 
 namespace Generala_DAS
 {
@@ -29,7 +34,7 @@ namespace Generala_DAS
                 }
                 catch
                 {
-                    // Evita bloquear la apertura del menú si la BD no está disponible aún
+                    
                 }
             }
         }
@@ -67,6 +72,7 @@ namespace Generala_DAS
         private void frmMenuPrincipal_FormClosing(object sender, FormClosingEventArgs e)
         {
             RegistrarCierreSesion();
+            
         }
 
         private void RegistrarCierreSesion()
@@ -92,6 +98,58 @@ namespace Generala_DAS
                 {
                 }
             }
+        }
+
+        private async void btnHostear_Click(object sender, EventArgs e)
+        {
+            ServidorGenerala enlace = new ServidorGenerala();
+            btnHostear.Text = "esperando al rival...";
+            btnHostear.BackColor = Color.FromArgb(255, 225, 135);
+           
+            await enlace.hostear(5000);
+            
+            btnHostear.Text = "rival conectado!";
+            btnHostear.BackColor = System.Drawing.Color.Green;
+            using(Form1 frm = new Form1(enlace))
+            {
+                frm.ShowDialog(this);
+            }
+
+
+        }
+
+        private async void btnUnirse_Click(object sender, EventArgs e)
+        {
+            string ip;
+            using (frmIP popup = new frmIP())
+            {
+                popup.ShowDialog();
+                ip = popup.ip;
+            }
+            
+            try
+            {
+                ServidorGenerala enlace = new ServidorGenerala();
+                
+                await enlace.conectar(ip, 5000); 
+                
+                btnUnirse.BackColor = Color.Green;
+                btnUnirse.Text = "Exito!";
+                using (Form1 frm = new Form1(enlace)) { frm.ShowDialog(this); }
+                    
+
+            }
+            catch (SocketException)
+            {
+                btnUnirse.BackColor = Color.Red;
+                btnUnirse.Text = "Reintentar";
+            }
+        }
+        
+
+        private void frmMenuPrincipal_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
         }
     }
 }

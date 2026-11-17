@@ -37,6 +37,7 @@
             this.ucTableroPuntaje2.Name = "ucTableroPuntaje2";
             this.ucTableroPuntaje2.Size = new System.Drawing.Size(764, 431);
             this.ucTableroPuntaje2.TabIndex = 0;
+            this.ucTableroPuntaje2.Load += new System.EventHandler(this.ucTableroPuntaje2_Load);
             // 
             // Form1
             // 
@@ -46,6 +47,9 @@
             this.Controls.Add(this.ucTableroPuntaje2);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }

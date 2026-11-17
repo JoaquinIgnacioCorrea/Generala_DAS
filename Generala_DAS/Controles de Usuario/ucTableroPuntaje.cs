@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -18,6 +20,9 @@ namespace Generala_DAS
 
         private PARTIDA_GENERALA_BE partida_be;
         private PARTIDA_GENERALA_BLL partida_bll;
+        private ServidorGenerala enlace;
+        private int miIndice;
+        private TABLERO_BLL tablerobll = new TABLERO_BLL();
 
 
         public ucTableroPuntaje()
@@ -67,31 +72,12 @@ namespace Generala_DAS
         {
             if (sender is PictureBox dadoClick && dadoClick.Tag is int indice)
             {
-                try
-                {
-                    partida_bll.AlternarBloqueo(partida_be,indice);
-                    DADO_BE dadoActual = partida_be.Cubilete.Dados[indice];
-                    dadoClick.BackColor = dadoActual.Bloqueado ? Color.Red : SystemColors.Control;
-                }
-                catch (InvalidOperationException ex)
-                {
-                    MessageBox.Show(ex.Message, "Acción no permitida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                EnviarAccion("BLOQUEAR;" + indice);
             }
         }
         private void btn_tirar_dados_Click(object sender, EventArgs e)
         {
-            try
-            {
-                partida_bll.TirarDados(partida_be);
-                ActualizarInterfazDados();
-                btn_tirar_dados.Enabled = partida_be.TurnoActual.SePuedeLanzar;
-                lbl_mensaje_select_casilla.Text = partida_be.TurnoActual.SePuedeLanzar ? "" : "Seleccione una celda para terminar su turno";
-            }
-            catch (InvalidOperationException ex)
-            {
-                MessageBox.Show(ex.Message, "Tirada no permitida", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            EnviarAccion("TIRAR");
         }
         private void btn_bloquear_dados_Click(object sender, EventArgs e)
         {
@@ -100,28 +86,16 @@ namespace Generala_DAS
 
         public void BloquearTodosLosDadosLibres()
         {
-            try
-            {
+            
                 for (int i = 0; i < partida_be.Cubilete.Dados.Count; i++)
                 {
-                    DADO_BE dado = partida_be.Cubilete.Dados[i];
-
-                    if (!dado.Bloqueado)
+                    if (!partida_be.Cubilete.Dados[i].Bloqueado)
                     {
-                        partida_bll.AlternarBloqueo(partida_be,i);
-
-                        Control[] encontrados = this.Controls.Find($"dado{i + 1}", true);
-                        if (encontrados.Length > 0 && encontrados[0] is PictureBox pbDado)
-                        {
-                            pbDado.BackColor = Color.Red;
-                        }
+                        EnviarAccion("BLOQUEAR;" + i);
                     }
                 }
-            }
-            catch (InvalidOperationException ex)
-            {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            
+            
         }
 
         private void ActualizarInterfazDados()
@@ -153,26 +127,7 @@ namespace Generala_DAS
 
             if (Enum.TryParse(nombreColumna, out CATEGORIAS categoriaSeleccionada))
             {
-                try
-                {
-                    int filaIndex = partida_be.IndiceJugadorActual;
-                    partida_bll.AnotarJugada(partida_be, categoriaSeleccionada);
-
-                    TABLERO_BE tablero_be = partida_be.Jugadores[filaIndex].Tablero;
-                    TABLERO_BLL tablero_bll= new BLL.TABLERO_BLL();
-                    int puntosAnotados = tablero_bll.ObtenerPuntaje(tablero_be, categoriaSeleccionada);
-                    Tablero.Rows[filaIndex].Cells[nombreColumna].Value = puntosAnotados;
-
-                    LimpiarInterfazNuevoTurno();
-                    MessageBox.Show($"¡Puntaje registrado exitosamente en {categoriaSeleccionada.ToString().Replace("_", " ")}!",
-                                    "Turno Finalizado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-
-                }
-                catch (InvalidOperationException ex)
-                {
-                    MessageBox.Show(ex.Message, "Acción no válida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                EnviarAccion("ANOTAR;"+ categoriaSeleccionada);
             }
             else
             {
@@ -181,27 +136,185 @@ namespace Generala_DAS
             }
         }
 
-        private void LimpiarInterfazNuevoTurno()
+       
+        public void ConfigurarRed(ServidorGenerala e)
         {
-            btn_tirar_dados.Enabled = true;
-
-            for (int i = 1; i <= 5; i++)
+            enlace = e;
+            miIndice = enlace.Host? 0 :1;
+            enlace.MensajeRecibido += AlRecibirMensaje;
+            enlace.EmpezarAEscuchar();
+            if (enlace.Host) { HostEjecutar(null, 0); }
+        }
+        private string TableroATexto(TABLERO_BE t)
+        {
+            List<string> partes = new List<string>();
+            foreach (CATEGORIAS cat in Enum.GetValues(typeof(CATEGORIAS)))
             {
-                Control[] encontrados = this.Controls.Find($"dado{i}", true);
-                if (encontrados.Length > 0 && encontrados[0] is PictureBox pbDado)
+                if (!tablerobll.CasilleroDisponible(t, cat))
                 {
-                    pbDado.BackColor = SystemColors.Control;
+                    partes.Add(cat + ":" + tablerobll.ObtenerPuntaje(t, cat));
+                }
 
-                    string rutaInicial = System.IO.Path.Combine(Application.StartupPath, "Sprites", "dado_cara_1.png");
-                    if (System.IO.File.Exists(rutaInicial))
-                    {
-                        pbDado.Image = Image.FromFile(rutaInicial);
-                    }
+            }
+                return string.Join(",", partes);
+        }
+        private string SerializarEstado()
+        {
+            List<DADO_BE> dados = partida_be.Cubilete.Dados;
+            string valores = string.Join(",", dados.Select(d => d.Valor));
+            string bloqueos = string.Join(",", dados.Select(d=> d.Bloqueado? 1:0));
+
+            int turno = partida_be.IndiceJugadorActual;
+            int puedelanzar = partida_be.TurnoActual.SePuedeLanzar ? 1 : 0;
+            int fin = partida_be.PartidaFinalizada ? 1 : 0;
+            string t0 = TableroATexto(partida_be.Jugadores[0].Tablero);
+            string t1 = TableroATexto(partida_be.Jugadores[1].Tablero);
+
+            return $"ESTADO;{valores};{bloqueos};{turno};{puedelanzar};{fin};{t0};{t1}";
+
+        }
+        private void ProcesarComando(string comando, int quienPide)
+        {
+            if (partida_be.IndiceJugadorActual != quienPide)
+            {
+                throw new InvalidOperationException("No es tu turno");
+            }
+            string[] partes = comando.Split(';');
+
+            switch (partes[0]) 
+            {
+                case "TIRAR":
+                    partida_bll.TirarDados(partida_be);
+                    break;
+                case "BLOQUEAR":
+                    partida_bll.AlternarBloqueo(partida_be, int.Parse(partes[1]));
+                    break;
+                case "ANOTAR":
+                    CATEGORIAS cat = (CATEGORIAS)Enum.Parse(typeof(CATEGORIAS), partes[1]);
+                    partida_bll.AnotarJugada(partida_be, cat);
+                    break;
+                default: throw new InvalidOperationException("No se reconocio el comando");
+            }
+        }
+        private void HostEjecutar(string comando, int quienPide)
+        {
+            try
+            {
+                if (comando != null)
+                {
+                    ProcesarComando(comando, quienPide);
+                }
+                string estado = SerializarEstado();
+                enlace?.Enviar(estado);
+                AplicarEstado(estado);
+            }
+            catch(InvalidOperationException ex)
+            {
+                if (enlace !=null && quienPide != miIndice)
+                {
+                    enlace.Enviar("ERROR;" + ex.Message);
+                }
+                else
+                {
+                    MessageBox.Show(ex.Message, "Accion no permitida.");
                 }
             }
+
+        }
+
+        private void EnviarAccion(string comando)
+        {
+            if (enlace == null)
+            {
+                HostEjecutar(comando, partida_be.IndiceJugadorActual);
+            }
+            else if (enlace.Host)
+            {
+                HostEjecutar(comando, 0);
+            }
+            else
+            {
+                enlace.Enviar(comando);
+            }
+        }
+        private void AplicarEstado(string estado)
+        {
+            string[] s = estado.Split(';');
+
+            int[] valores = s[1].Split(',').Select(int.Parse).ToArray();
+            bool[] bloqueos = s[2].Split(',').Select(x=> x == "1").ToArray();
+            int turno = int.Parse(s[3]);
+            bool puede = s[4] == "1";
+            bool fin = s[5] == "1";
+
+            for (int i=0; i<5; i++)
+            {
+                partida_be.Cubilete.Dados[i].Valor = valores[i];
+                partida_be.Cubilete.Dados[i].Bloqueado = bloqueos[i];
+            }
+            ActualizarInterfazDados();
+
+            CargarFilas(0, s[6]);
+            CargarFilas(1, s[7]);
+
+            bool esMiTurno = (enlace == null || turno == miIndice) && !fin;
+            btn_tirar_dados.Enabled = esMiTurno && puede;
+            btn_terminar_turno.Enabled = esMiTurno;
+            lbl_mensaje_select_casilla.Text =
+                fin ? "Partida terminada." :
+                !esMiTurno ? "Turno del rival" :
+                !puede ? "Seleccione una celda para terminar el turno" : "";
+            if (fin)
+            {
+                MessageBox.Show("Partida Finalizada");
+            }
+
+        }
+        private void CargarFilas(int fila, string texto)
+        {
+            string[] s = texto.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string f in s)
+            {
+                string[] cat = f.Split(':');
+                Tablero.Rows[fila].Cells[cat[0]].Value = cat[1];
+            }
+        }
+        private void AlRecibirMensaje(string mensaje)
+        {
+            if (this.IsDisposed || this.Disposing || !this.IsHandleCreated)
+                return;
+            this.Invoke((Action)(() =>
+            {
+                if (mensaje == "DESCONECTADO")
+                {
+                    MessageBox.Show("El Rival se desconectó.");
+                    btn_tirar_dados.Enabled = false;
+                    return;
+                }
+                if (enlace.Host)
+                {
+                    HostEjecutar(mensaje, 1);
+                    
+                }
+                else if (mensaje.StartsWith("ESTADO"))
+                {
+                    AplicarEstado(mensaje);
+                }
+                else if (mensaje.StartsWith("ERROR"))
+                {
+                    MessageBox.Show(mensaje.Split(';')[1]);
+                }
+            }
+                )
+                );
         }
 
 
+
+
+
+
+    
     }
 
 }

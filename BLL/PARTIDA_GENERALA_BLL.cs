@@ -62,7 +62,7 @@ namespace BLL
             cubilete_bll.Lanzar(partida.Cubilete);
             turno_bll.RegistrarLanzamiento(partida.TurnoActual);
 
-            // B2.3 - Registrar cada tirada en XML
+            
             RegistrarMovimientoEnXml(
                 partida,
                 $"Tirada #{partida.TurnoActual.LanzamientoActual}",
@@ -72,7 +72,7 @@ namespace BLL
             {
                 tablero_bll.RegistrarPuntaje(partida.JugadorActual.Tablero, CATEGORIAS.generala, 60);
 
-                // B2.3 - Registrar anotación de Generala Servida en XML
+                
                 RegistrarMovimientoEnXml(partida, CATEGORIAS.generala.ToString(), 60);
 
                 FinalizarPartida(partida, partida.JugadorActual);
@@ -108,7 +108,7 @@ namespace BLL
 
             tablero_bll.RegistrarPuntaje(partida.JugadorActual.Tablero, categoria, puntos);
 
-            // B2.3 - Registrar cada anotación de puntaje en XML antes de avanzar el turno
+            
             RegistrarMovimientoEnXml(partida, categoria.ToString(), puntos);
 
             turno_bll.Finalizar(partida.TurnoActual);

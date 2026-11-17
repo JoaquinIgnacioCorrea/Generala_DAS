@@ -60,5 +60,10 @@ namespace Generala_DAS
                     MessageBoxIcon.Warning);
             }
         }
+
+        private void dgvBitacora_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
