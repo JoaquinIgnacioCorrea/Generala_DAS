@@ -52,22 +52,17 @@
     <Compile Include="frmJuego.Designer.cs">
       <DependentUpon>frmJuego.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmLogin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmLogin.Designer.cs">
-      <DependentUpon>frmLogin.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmBitacora.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmBitacora.Designer.cs">
       <DependentUpon>frmBitacora.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmLogin1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>frmLogin.resx</DependentUpon>
+    <Compile Include="frmLoginUsuario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLoginUsuario.Designer.cs">
+      <DependentUpon>frmLoginUsuario.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMenuPrincipal.cs">
       <SubType>Form</SubType>
@@ -86,10 +81,8 @@
     <EmbeddedResource Include="frmJuego.resx">
       <DependentUpon>frmJuego.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmLogin.resx">
-      <DependentUpon>frmLogin.cs</DependentUpon>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>frmLogin1.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="frmLoginUsuario.resx">
+      <DependentUpon>frmLoginUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -113,6 +113,7 @@
             this.btn_terminar_turno.TabIndex = 13;
             this.btn_terminar_turno.Text = "Terminar turno";
             this.btn_terminar_turno.UseVisualStyleBackColor = true;
+            this.btn_terminar_turno.Click += new System.EventHandler(this.btn_terminar_turno_Click);
             // 
             // btn_bloquear_dados
             // 
@@ -122,6 +123,7 @@
             this.btn_bloquear_dados.TabIndex = 12;
             this.btn_bloquear_dados.Text = "Bloquear dados";
             this.btn_bloquear_dados.UseVisualStyleBackColor = true;
+            this.btn_bloquear_dados.Click += new System.EventHandler(this.btn_bloquear_dados_Click);
             // 
             // btn_tirar_dados
             // 
@@ -131,6 +133,7 @@
             this.btn_tirar_dados.TabIndex = 11;
             this.btn_tirar_dados.Text = "Tirar";
             this.btn_tirar_dados.UseVisualStyleBackColor = true;
+            this.btn_tirar_dados.Click += new System.EventHandler(this.btn_tirar_dados_Click);
             // 
             // Tablero
             // 

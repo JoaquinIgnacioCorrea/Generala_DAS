@@ -39,11 +39,10 @@ namespace Generala_DAS
         {
             this.Hide();
 
-            using(frmLogin login = new frmLogin())
+            using(frmLoginUsuario login = new frmLoginUsuario())
             {
                 if(login.ShowDialog() == DialogResult.OK)
                 {
-
                     this.Show();
                 }
                 else

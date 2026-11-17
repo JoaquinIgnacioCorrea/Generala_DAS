@@ -1,13 +1,14 @@
-﻿using System;
-using System.Windows.Forms;
-using BE;
+﻿using BE;
 using BLL;
+using System;
+
+using System.Windows.Forms;
 
 namespace Generala_DAS
 {
-    public partial class frmLogin : Form
+    public partial class frmLoginUsuario : Form
     {
-        public frmLogin()
+        public frmLoginUsuario()
         {
             InitializeComponent();
         }
@@ -46,7 +47,7 @@ namespace Generala_DAS
             if (ValidarCamposLlenos())
             {
                 string nombre = tb_nombre_usuario.Text;
-                string pass = tb_pass.Text;
+                string pass = tb_contraseña.Text;
                 usuario_be = usuario_bll.IniciarSesion(nombre, pass);
                 if (usuario_be != null)
                 {
@@ -66,12 +67,12 @@ namespace Generala_DAS
         private void LimpiarCampos()
         {
             tb_nombre_usuario.Text = "";
-            tb_pass.Text = "";
+            lbl_contraseña.Text = "";
         }
 
         private bool ValidarCamposLlenos()
         {
-            return tb_nombre_usuario.Text != "" && tb_pass.Text != "";
+            return tb_nombre_usuario.Text != "" && lbl_contraseña.Text != "";
         }
 
         private void Mensaje(string msj)
