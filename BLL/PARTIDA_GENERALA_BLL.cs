@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using BE;
 using DAL;
@@ -81,7 +82,7 @@ namespace BLL
             cubilete_bll.Lanzar(partida.Cubilete);
             turno_bll.RegistrarLanzamiento(partida.TurnoActual);
 
-            
+
             RegistrarMovimientoEnXml(
                 partida,
                 $"Tirada #{partida.TurnoActual.LanzamientoActual}",
@@ -91,7 +92,7 @@ namespace BLL
             {
                 tablero_bll.RegistrarPuntaje(partida.JugadorActual.Tablero, CATEGORIAS.generala, 60);
 
-                
+
                 RegistrarMovimientoEnXml(partida, CATEGORIAS.generala.ToString(), 60);
 
                 FinalizarPartida(partida, partida.JugadorActual);
@@ -127,7 +128,7 @@ namespace BLL
 
             tablero_bll.RegistrarPuntaje(partida.JugadorActual.Tablero, categoria, puntos);
 
-            
+
             MOVIMIENTO_XML_BE mov = RegistrarMovimientoEnXml(partida, categoria.ToString(), puntos);
 
             turno_bll.Finalizar(partida.TurnoActual);

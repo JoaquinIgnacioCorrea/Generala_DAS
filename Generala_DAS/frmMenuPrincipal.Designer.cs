@@ -26,6 +26,7 @@ namespace Generala_DAS
             this.btnUnirse = new System.Windows.Forms.Button();
             this.btnBackup = new System.Windows.Forms.Button();
             this.btnRestaurar = new System.Windows.Forms.Button();
+            this.btnStats = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblTitulo
@@ -50,7 +51,7 @@ namespace Generala_DAS
             // 
             // btnBitacora
             // 
-            this.btnBitacora.Location = new System.Drawing.Point(75, 211);
+            this.btnBitacora.Location = new System.Drawing.Point(75, 192);
             this.btnBitacora.Name = "btnBitacora";
             this.btnBitacora.Size = new System.Drawing.Size(230, 38);
             this.btnBitacora.TabIndex = 2;
@@ -60,7 +61,7 @@ namespace Generala_DAS
             // 
             // btnVisorXml
             // 
-            this.btnVisorXml.Location = new System.Drawing.Point(75, 258);
+            this.btnVisorXml.Location = new System.Drawing.Point(75, 232);
             this.btnVisorXml.Name = "btnVisorXml";
             this.btnVisorXml.Size = new System.Drawing.Size(230, 38);
             this.btnVisorXml.TabIndex = 3;
@@ -70,7 +71,7 @@ namespace Generala_DAS
             // 
             // btnCerrarSesion
             // 
-            this.btnCerrarSesion.Location = new System.Drawing.Point(75, 349);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(75, 355);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(230, 38);
             this.btnCerrarSesion.TabIndex = 4;
@@ -80,7 +81,7 @@ namespace Generala_DAS
             // 
             // btnHostear
             // 
-            this.btnHostear.Location = new System.Drawing.Point(75, 119);
+            this.btnHostear.Location = new System.Drawing.Point(75, 112);
             this.btnHostear.Name = "btnHostear";
             this.btnHostear.Size = new System.Drawing.Size(230, 38);
             this.btnHostear.TabIndex = 5;
@@ -90,7 +91,7 @@ namespace Generala_DAS
             // 
             // btnUnirse
             // 
-            this.btnUnirse.Location = new System.Drawing.Point(75, 165);
+            this.btnUnirse.Location = new System.Drawing.Point(75, 152);
             this.btnUnirse.Name = "btnUnirse";
             this.btnUnirse.Size = new System.Drawing.Size(230, 38);
             this.btnUnirse.TabIndex = 6;
@@ -100,7 +101,7 @@ namespace Generala_DAS
             // 
             // btnBackup
             // 
-            this.btnBackup.Location = new System.Drawing.Point(75, 302);
+            this.btnBackup.Location = new System.Drawing.Point(75, 272);
             this.btnBackup.Name = "btnBackup";
             this.btnBackup.Size = new System.Drawing.Size(108, 38);
             this.btnBackup.TabIndex = 7;
@@ -110,7 +111,7 @@ namespace Generala_DAS
             // 
             // btnRestaurar
             // 
-            this.btnRestaurar.Location = new System.Drawing.Point(197, 302);
+            this.btnRestaurar.Location = new System.Drawing.Point(197, 272);
             this.btnRestaurar.Name = "btnRestaurar";
             this.btnRestaurar.Size = new System.Drawing.Size(108, 38);
             this.btnRestaurar.TabIndex = 8;
@@ -118,11 +119,22 @@ namespace Generala_DAS
             this.btnRestaurar.UseVisualStyleBackColor = true;
             this.btnRestaurar.Click += new System.EventHandler(this.btnRestaurar_Click);
             // 
+            // btnStats
+            // 
+            this.btnStats.Location = new System.Drawing.Point(75, 315);
+            this.btnStats.Name = "btnStats";
+            this.btnStats.Size = new System.Drawing.Size(230, 38);
+            this.btnStats.TabIndex = 9;
+            this.btnStats.Text = "Estadisticas";
+            this.btnStats.UseVisualStyleBackColor = true;
+            this.btnStats.Click += new System.EventHandler(this.btnStats_Click);
+            // 
             // frmMenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(380, 399);
+            this.ClientSize = new System.Drawing.Size(387, 487);
+            this.Controls.Add(this.btnStats);
             this.Controls.Add(this.btnRestaurar);
             this.Controls.Add(this.btnBackup);
             this.Controls.Add(this.btnUnirse);
@@ -156,5 +168,6 @@ namespace Generala_DAS
         private System.Windows.Forms.Button btnUnirse;
         private System.Windows.Forms.Button btnBackup;
         private System.Windows.Forms.Button btnRestaurar;
+        private System.Windows.Forms.Button btnStats;
     }
 }

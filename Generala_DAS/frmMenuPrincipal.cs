@@ -191,5 +191,13 @@ namespace Generala_DAS
             BACKUP_BLL b = new BACKUP_BLL();
             b.RestaurarBackup();
         }
+
+        private void btnStats_Click(object sender, EventArgs e)
+        {
+            using (frmEstadisticas stats = new frmEstadisticas(idJugadorActual))
+            {
+                stats.ShowDialog(this);
+            }
+        }
     }
 }
