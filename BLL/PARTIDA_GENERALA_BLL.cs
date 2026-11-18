@@ -231,7 +231,7 @@ namespace BLL
             mp_partida.Editar(partida);
             foreach (JUGADOR_BE j in partida.Jugadores)
             {
-                string resultado = partida.Ganador == null ? "EMPATE" : (j.Id_jugador == partida.Ganador.Id_jugador ? "GANADOR" : "PERDEDOR")
+                string resultado = partida.Ganador == null ? "EMPATE" : (j.Id_jugador == partida.Ganador.Id_jugador ? "GANADOR" : "PERDEDOR");
                 mp_jxp.ActualizarPuntajeYResultado(
                     partida.Id_partida,
                     j.Id_jugador,
