@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace Generala_DAS
 {
@@ -247,6 +248,7 @@ namespace Generala_DAS
                     MessageBox.Show(ex.Message, "Accion no permitida.");
                 }
             }
+            
         }
 
         private void EnviarAccion(string comando)

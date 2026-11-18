@@ -14,8 +14,8 @@ namespace Generala_DAS
         public void Abrir()
         {
             conexion = new SqlConnection();
-            //conexion.ConnectionString = "Data Source=.\\SQLEXPRESS02;Initial Catalog=Generala;Integrated Security=True";
-            conexion.ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=Generala; Integrated Security=true";
+            conexion.ConnectionString = "Data Source=.\\SQLEXPRESS02;Initial Catalog=Generala;Integrated Security=True";
+            //conexion.ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=Generala; Integrated Security=true";
             conexion.Open();
         }
 
@@ -65,7 +65,7 @@ namespace Generala_DAS
         public SqlParameter CrearParametro(string nombre, TimeSpan valor)
         {
             SqlParameter parametro = new SqlParameter(nombre, valor);
-            parametro.DbType = DbType.Time;
+            parametro.SqlDbType = SqlDbType.Time;
             return parametro;
         }
 

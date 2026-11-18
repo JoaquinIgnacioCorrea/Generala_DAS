@@ -18,7 +18,6 @@ namespace DAL
         {
             acceso = new ACCESO();
             List<SqlParameter> parametros = new List<SqlParameter>();
-            //parametros.Add(acceso.CrearParametro("@jugador_actual", partida_p.JugadorActual.Id_jugador));
             parametros.Add(acceso.CrearParametro("@ganador", -1));
             parametros.Add(acceso.CrearParametro("@fecha_partida", partida_p.Fecha));
             parametros.Add(acceso.CrearParametro("@tiempo_partida", TimeSpan.Zero));
@@ -33,7 +32,6 @@ namespace DAL
             acceso = new ACCESO();
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(acceso.CrearParametro("@id_partida", partida_p.Id_partida));
-            parametros.Add(acceso.CrearParametro("@jugador_actual",partida_p.JugadorActual.Id_jugador));
             parametros.Add(acceso.CrearParametro("@ganador",partida_p.Ganador != null ? partida_p.Ganador.Id_jugador : 0));
             parametros.Add(acceso.CrearParametro("@tiempo_partida",partida_p.DuracionPartida));
             acceso.Abrir();

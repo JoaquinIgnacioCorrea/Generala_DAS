@@ -13,6 +13,8 @@ namespace BLL
         private readonly TABLERO_BLL tablero_bll = new TABLERO_BLL();
         private readonly XML_MOVIMIENTOS xml_movimientos = new XML_MOVIMIENTOS();
         private readonly MP_JUGADA mp_jugada = new MP_JUGADA();
+        private readonly MP_PARTIDA mp_partida = new MP_PARTIDA();
+        private readonly MP_JUGADORXPARTIDA mp_jxp = new MP_JUGADORXPARTIDA();
 
         public void AgregarJugador(PARTIDA_GENERALA_BE partida, int id_jugador_p)
         {
@@ -22,7 +24,12 @@ namespace BLL
             if (partida.PartidaFinalizada || partida.RondaActual > 0)
                 throw new InvalidOperationException("No se pueden agregar jugadores con la partida en curso.");
 
+            if (id_jugador_p <= 0)
+                id_jugador_p = new MP_JUGADOR().ObtenerOCrearInvitado();
+
             JUGADOR_BE jugador = new MP_JUGADOR().Listar_Jugador(id_jugador_p);
+            if (jugador == null)
+                throw new InvalidOperationException("El jugador no existe.");
 
             partida.Jugadores.Add(jugador);
         }
@@ -36,7 +43,14 @@ namespace BLL
                 throw new InvalidOperationException("Debe haber al menos un jugador para iniciar la partida.");
 
             if (partida.Id_partida <= 0)
-                partida.Id_partida = 1;
+            {
+                mp_partida.Insertar(partida);
+                foreach (JUGADOR_BE jugador in partida.Jugadores)
+                {
+                    mp_jxp.Insertar(partida.Id_partida, jugador.Id_jugador);
+                }
+            }
+
 
             partida.RondaActual = 1;
             partida.IndiceJugadorActual = 0;
@@ -127,12 +141,16 @@ namespace BLL
 
         private MOVIMIENTO_XML_BE RegistrarMovimientoEnXml(PARTIDA_GENERALA_BE partida, string categoriaAnotada, int puntajeObtenido)
         {
-            int idPartida = partida.Id_partida > 0 ? partida.Id_partida : 1;
+            if (partida.Id_partida <= 0)
+                throw new InvalidOperationException("La partida no tiene ID valido");
+            int idPartida = partida.Id_partida;
             MOVIMIENTO_XML_BE mov = new MOVIMIENTO_XML_BE
             {
+
                 IdPartida = idPartida,
                 FechaHora = DateTime.Now,
                 Jugador = partida.JugadorActual != null ? partida.JugadorActual.Nombre : string.Empty,
+                Id_jugador = partida.JugadorActual.Id_jugador,
                 Ronda = partida.RondaActual,
                 ValoresDados = partida.Cubilete != null && partida.Cubilete.Valores != null
                     ? string.Join("-", partida.Cubilete.Valores)

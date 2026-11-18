@@ -74,7 +74,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Partida](
 	[id_partida] [int] IDENTITY(1,1) NOT NULL,
-	[jugador_actual] [int] NOT NULL,
 	[ganador] [int] NOT NULL,
 	[fecha_partida] [datetime] NOT NULL,
 	[tiempo_partida] [time](7) NOT NULL,
@@ -252,14 +251,12 @@ SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROC [dbo].[editar_partida]
     @id_partida INT,
-    @jugador_actual INT,
     @ganador INT,
     @tiempo_partida TIME(7)
 AS
 BEGIN
     UPDATE Partida 
-    SET jugador_actual = @jugador_actual,
-        ganador = @ganador,
+    SET ganador = @ganador,
         tiempo_partida = @tiempo_partida
     WHERE id_partida = @id_partida
 END
@@ -340,14 +337,13 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROC [dbo].[insertar_partida]
-    @jugador_actual INT,
     @ganador INT,
     @fecha_partida DATETIME,
     @tiempo_partida TIME(7)
 AS
 BEGIN
-    INSERT INTO Partida (jugador_actual, ganador, fecha_partida, tiempo_partida)
-    VALUES (@jugador_actual, @ganador, @fecha_partida, @tiempo_partida)
+    INSERT INTO Partida (ganador, fecha_partida, tiempo_partida)
+    VALUES (@ganador, @fecha_partida, @tiempo_partida)
     SELECT SCOPE_IDENTITY() AS id_partida
 END
 GO
@@ -445,7 +441,6 @@ AS
 BEGIN
     SELECT 
         p.id_partida, 
-        p.jugador_actual, 
         p.ganador, 
         p.fecha_partida, 
         p.tiempo_partida
@@ -546,7 +541,6 @@ AS
 BEGIN
     SELECT 
         p.id_partida, 
-        p.jugador_actual, 
         p.ganador, 
         p.fecha_partida, 
         p.tiempo_partida
@@ -568,7 +562,6 @@ AS
 BEGIN
     SELECT 
         id_partida, 
-        jugador_actual, 
         ganador, 
         fecha_partida, 
         tiempo_partida

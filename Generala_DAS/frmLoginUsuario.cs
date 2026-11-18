@@ -67,12 +67,12 @@ namespace Generala_DAS
         private void LimpiarCampos()
         {
             tb_nombre_usuario.Text = "";
-            lbl_contraseña.Text = "";
+            tb_contraseña.Text = "";
         }
 
         private bool ValidarCamposLlenos()
         {
-            return tb_nombre_usuario.Text != "" && lbl_contraseña.Text != "";
+            return tb_nombre_usuario.Text != "" && tb_contraseña.Text != "";
         }
 
         private void Mensaje(string msj)

@@ -90,5 +90,10 @@ namespace DAL
             }
             return listaJugadores;
         }
+        public int ObtenerOCrearInvitado()
+        {
+            JUGADOR_BE invitado = ListarTodos().FirstOrDefault(j => j.Nombre == "INVITADO");
+            return invitado != null ? invitado.Id_jugador : Insertar("INVITADO");
+        }
     }
 }
