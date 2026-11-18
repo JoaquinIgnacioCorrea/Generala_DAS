@@ -14,8 +14,16 @@ namespace Generala_DAS
         public void Abrir()
         {
             conexion = new SqlConnection();
-            conexion.ConnectionString = "Data Source=.\\SQLEXPRESS02;Initial Catalog=Generala;Integrated Security=True";
-            //conexion.ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=Generala; Integrated Security=true";
+            //conexion.ConnectionString = "Data Source=.\\SQLEXPRESS02;Initial Catalog=Generala;Integrated Security=True";
+            conexion.ConnectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=Generala; Integrated Security=true";
+            conexion.Open();
+        }
+
+        public void AbrirMaster()
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(conexion.ConnectionString);
+            builder.InitialCatalog = "master";
+            conexion.ConnectionString = builder.ConnectionString;
             conexion.Open();
         }
 

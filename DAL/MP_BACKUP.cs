@@ -11,10 +11,11 @@ namespace DAL
 {
     public class MP_BACKUP
     {
+        private string carpeta = @"C:\BackupsGenerala";
+
         public void RealizarBackup()
         {
             ACCESO acceso = new ACCESO();
-            string carpeta = @"C:\BackupsGenerala";
             
             if(!Directory.Exists(carpeta)) Directory.CreateDirectory(carpeta);
 
@@ -28,6 +29,9 @@ namespace DAL
         {
             ACCESO acceso = new ACCESO();
             string ruta = @"C:\BackupsGenerala\backup.bak";
+
+            if (!Directory.Exists(carpeta)) throw new FileNotFoundException("No se encontró el archivo de respaldo en " + ruta);
+
             string cmd = $@"
                             USE master;
                             IF EXISTS (SELECT name FROM sys.databases WHERE name = N'Generala')
