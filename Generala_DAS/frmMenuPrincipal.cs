@@ -137,12 +137,15 @@ namespace Generala_DAS
             btnHostear.BackColor = Color.FromArgb(255, 225, 135);
            
             await enlace.hostear(5000);
-            
+            string saludo = await enlace.LeerLineaAsync();
+            int idJugador2 = int.Parse(saludo.Split(';')[1]);
+
+
             btnHostear.Text = "rival conectado!";
             btnHostear.BackColor = System.Drawing.Color.Green;
             if(idJugadorActual > -1)
             {
-                using (frmJuego frm = new frmJuego(enlace, idJugadorActual))
+                using (frmJuego frm = new frmJuego(enlace, idJugadorActual, idJugador2))
                 {
                     frm.ShowDialog(this);
                 }
@@ -162,11 +165,23 @@ namespace Generala_DAS
             {
                 ServidorGenerala enlace = new ServidorGenerala();
                 
-                await enlace.conectar(ip, 5000); 
+                await enlace.conectar(ip, 5000);
+                enlace.Enviar($"Hola;{idJugadorActual}");
+                string inicio = await enlace.LeerLineaAsync();
+                string[] s = inicio.Split(';');
+                int idPartida = int.Parse(s[1]);
+                int idJ1 = int.Parse(s[2]);
+                string NombreJ1 = s[3];
+                int idJ2 = int.Parse(s[4]);
+                string NombreJ2 = s[5];
+
                 
                 btnUnirse.BackColor = Color.Green;
                 btnUnirse.Text = "Exito!";
-                using (frmJuego frm = new frmJuego(enlace, idJugadorActual)) { frm.ShowDialog(this); }
+                using (frmJuego frm = new frmJuego(enlace, idPartida, idJ1, NombreJ1, idJ2, NombreJ2)) 
+                {
+                    frm.ShowDialog(this);
+                }
                     
 
             }

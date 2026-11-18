@@ -86,5 +86,9 @@ namespace Generala_DAS
             cliente?.Close();
             listener?.Stop();
         }
+        public async Task<string> LeerLineaAsync()
+        {
+            return await sr.ReadLineAsync();
+        }
     }
 }

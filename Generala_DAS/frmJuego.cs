@@ -45,6 +45,21 @@ namespace Generala_DAS
         {
             enlace = e;
         }
+        public frmJuego(ServidorGenerala e,int idPartida, int idJ1, string NombreJ1, int idJ2, string NombreJ2)
+        {
+            InitializeComponent();
+            CrearColumnas();
+            AsignarTagsADados();
+            Tablero.ReadOnly = true;
+            Tablero.RowHeadersWidth = 90;
+            enlace = e;
+            partida_be = new PARTIDA_GENERALA_BE();
+            partida_bll = new PARTIDA_GENERALA_BLL();
+            partida_be.Id_partida = idPartida;
+            partida_be.Jugadores.Add(new JUGADOR_BE { Id_jugador = idJ1, Nombre = NombreJ1 });
+            partida_be.Jugadores.Add(new JUGADOR_BE { Id_jugador = idJ2, Nombre = NombreJ2 });
+            CrearFilas();
+        }
 
         private void frmJuego_Load(object sender, EventArgs e)
         {
@@ -168,6 +183,13 @@ namespace Generala_DAS
         {
             enlace = e;
             miIndice = enlace.Host ? 0 : 1;
+            if (enlace.Host)
+            {
+                JUGADOR_BE j1 = partida_be.Jugadores[0];
+                JUGADOR_BE j2 = partida_be.Jugadores[1];
+                enlace.Enviar($"INICIO;{partida_be.Id_partida};{j1.Id_jugador};{j1.Nombre};{j2.Id_jugador};{j2.Nombre}");
+            }
+
             enlace.MensajeRecibido += AlRecibirMensaje;
             enlace.EmpezarAEscuchar();
             if (enlace.Host) { HostEjecutar(null, 0); }
