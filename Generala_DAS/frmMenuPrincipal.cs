@@ -12,7 +12,6 @@ namespace Generala_DAS
 {
     public partial class frmMenuPrincipal : Form
     {
-        private readonly BITACORA_BLL bitacora_bll = new BITACORA_BLL();
         private readonly USUARIO_BLL usuario_bll = new USUARIO_BLL();
         private int idJugadorActual;
 
@@ -29,17 +28,6 @@ namespace Generala_DAS
             if(idJugadorActual == 0)
             {
                 idJugadorActual = MostrarLogin();
-            }
-            if (idJugadorActual > 0)
-            {
-                try
-                {
-                    bitacora_bll.RegistrarEvento(idJugadorActual, "Inicio de sesión");
-                }
-                catch
-                {
-                    
-                }
             }
         }
 
@@ -96,7 +84,7 @@ namespace Generala_DAS
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
             RegistrarCierreSesion();
-            this.Close();
+            idJugadorActual = MostrarLogin();
         }
 
         private void frmMenuPrincipal_FormClosing(object sender, FormClosingEventArgs e)
@@ -107,27 +95,21 @@ namespace Generala_DAS
 
         private void RegistrarCierreSesion()
         {
-            if (idJugadorActual > 0)
+            int id = idJugadorActual > 0
+                ? idJugadorActual
+                : (USUARIO_BLL.UsuarioActual != null ? USUARIO_BLL.UsuarioActual.Id_jugador : 0);
+
+            if (id > 0)
             {
                 try
                 {
-                    bitacora_bll.RegistrarEvento(idJugadorActual, "Cierre de sesión");
-                }
-                catch
-                {
-                }
-                idJugadorActual = 0;
-            }
-            else if (USUARIO_BLL.UsuarioActual != null)
-            {
-                try
-                {
-                    usuario_bll.CerrarSesion();
+                    usuario_bll.CerrarSesion(id);
                 }
                 catch
                 {
                 }
             }
+            idJugadorActual = 0;
         }
 
         private async void btnHostear_Click(object sender, EventArgs e)

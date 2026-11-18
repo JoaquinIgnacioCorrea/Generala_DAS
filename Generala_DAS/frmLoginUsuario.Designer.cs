@@ -67,7 +67,7 @@
             // 
             // btn_iniciar_sesion
             // 
-            this.btn_iniciar_sesion.Location = new System.Drawing.Point(96, 344);
+            this.btn_iniciar_sesion.Location = new System.Drawing.Point(96, 277);
             this.btn_iniciar_sesion.Name = "btn_iniciar_sesion";
             this.btn_iniciar_sesion.Size = new System.Drawing.Size(183, 23);
             this.btn_iniciar_sesion.TabIndex = 17;
@@ -77,7 +77,7 @@
             // 
             // btn_registrarse
             // 
-            this.btn_registrarse.Location = new System.Drawing.Point(96, 295);
+            this.btn_registrarse.Location = new System.Drawing.Point(96, 322);
             this.btn_registrarse.Name = "btn_registrarse";
             this.btn_registrarse.Size = new System.Drawing.Size(183, 23);
             this.btn_registrarse.TabIndex = 16;
