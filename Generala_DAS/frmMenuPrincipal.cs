@@ -182,5 +182,17 @@ namespace Generala_DAS
         {
 
         }
+
+        private void btnBackup_Click(object sender, EventArgs e)
+        {
+            BACKUP_BLL b = new BACKUP_BLL();
+            b.RealizarBackup();
+        }
+
+        private void btnRestaurar_Click(object sender, EventArgs e)
+        {
+            BACKUP_BLL b = new BACKUP_BLL();
+            b.RestaurarBackup();
+        }
     }
 }

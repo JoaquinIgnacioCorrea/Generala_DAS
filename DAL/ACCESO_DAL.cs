@@ -93,6 +93,7 @@ namespace Generala_DAS
             comando.Dispose();
             return fila;
         }
+        
 
         public int EscribirEscalar(string comando_p, List<SqlParameter> parametro = null)
         {

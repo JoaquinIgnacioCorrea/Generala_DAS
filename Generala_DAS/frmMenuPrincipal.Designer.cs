@@ -24,6 +24,8 @@ namespace Generala_DAS
             this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.btnHostear = new System.Windows.Forms.Button();
             this.btnUnirse = new System.Windows.Forms.Button();
+            this.btnBackup = new System.Windows.Forms.Button();
+            this.btnRestaurar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblTitulo
@@ -68,7 +70,7 @@ namespace Generala_DAS
             // 
             // btnCerrarSesion
             // 
-            this.btnCerrarSesion.Location = new System.Drawing.Point(75, 304);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(75, 349);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(230, 38);
             this.btnCerrarSesion.TabIndex = 4;
@@ -96,11 +98,33 @@ namespace Generala_DAS
             this.btnUnirse.UseVisualStyleBackColor = true;
             this.btnUnirse.Click += new System.EventHandler(this.btnUnirse_Click);
             // 
+            // btnBackup
+            // 
+            this.btnBackup.Location = new System.Drawing.Point(75, 302);
+            this.btnBackup.Name = "btnBackup";
+            this.btnBackup.Size = new System.Drawing.Size(108, 38);
+            this.btnBackup.TabIndex = 7;
+            this.btnBackup.Text = "Hacer Backup";
+            this.btnBackup.UseVisualStyleBackColor = true;
+            this.btnBackup.Click += new System.EventHandler(this.btnBackup_Click);
+            // 
+            // btnRestaurar
+            // 
+            this.btnRestaurar.Location = new System.Drawing.Point(197, 302);
+            this.btnRestaurar.Name = "btnRestaurar";
+            this.btnRestaurar.Size = new System.Drawing.Size(108, 38);
+            this.btnRestaurar.TabIndex = 8;
+            this.btnRestaurar.Text = "Restaurar";
+            this.btnRestaurar.UseVisualStyleBackColor = true;
+            this.btnRestaurar.Click += new System.EventHandler(this.btnRestaurar_Click);
+            // 
             // frmMenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(380, 375);
+            this.ClientSize = new System.Drawing.Size(380, 399);
+            this.Controls.Add(this.btnRestaurar);
+            this.Controls.Add(this.btnBackup);
             this.Controls.Add(this.btnUnirse);
             this.Controls.Add(this.btnHostear);
             this.Controls.Add(this.btnCerrarSesion);
@@ -130,5 +154,7 @@ namespace Generala_DAS
         private System.Windows.Forms.Button btnCerrarSesion;
         private System.Windows.Forms.Button btnHostear;
         private System.Windows.Forms.Button btnUnirse;
+        private System.Windows.Forms.Button btnBackup;
+        private System.Windows.Forms.Button btnRestaurar;
     }
 }
