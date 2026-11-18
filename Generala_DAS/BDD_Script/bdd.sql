@@ -1,6 +1,6 @@
 USE [Generala]
 GO
-/****** Objeto: Table [dbo].[Bitacora] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: Table [dbo].[Bitacora] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -16,7 +16,7 @@ CREATE TABLE [dbo].[Bitacora](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Objeto: Table [dbo].[Jugadas] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: Table [dbo].[Jugadas] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -36,7 +36,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Objeto: Table [dbo].[Jugador] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: Table [dbo].[Jugador] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -50,7 +50,7 @@ CREATE TABLE [dbo].[Jugador](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Objeto: Table [dbo].[JugadorXPartida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: Table [dbo].[JugadorXPartida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -67,13 +67,14 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Objeto: Table [dbo].[Partida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: Table [dbo].[Partida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE TABLE [dbo].[Partida](
 	[id_partida] [int] IDENTITY(1,1) NOT NULL,
+	[jugador_actual] [int] NOT NULL,
 	[ganador] [int] NOT NULL,
 	[fecha_partida] [datetime] NOT NULL,
 	[tiempo_partida] [time](7) NOT NULL,
@@ -83,7 +84,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Objeto: Table [dbo].[Usuario] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: Table [dbo].[Usuario] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -133,7 +134,7 @@ REFERENCES [dbo].[Jugador] ([id_jugador])
 GO
 ALTER TABLE [dbo].[Usuario] CHECK CONSTRAINT [FK_Usuario_Jugador1]
 GO
-/****** Objeto: StoredProcedure [dbo].[actualizar_jugadorxpartida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[actualizar_jugadorxpartida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -153,7 +154,7 @@ BEGIN
     WHERE id_partida = @id_partida AND id_jugador = @id_jugador
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[alta_usuario] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[alta_usuario] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -171,7 +172,7 @@ BEGIN
     SELECT SCOPE_IDENTITY() AS id_usuario
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[baja_usuario] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[baja_usuario] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -184,7 +185,7 @@ BEGIN
     WHERE id_usuario = @id_usuario
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[borrar_jugador] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[borrar_jugador] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -199,7 +200,7 @@ BEGIN
     WHERE id_jugador = @id_jugador
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[borrar_jugadorxpartida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[borrar_jugadorxpartida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -214,7 +215,7 @@ BEGIN
     WHERE id_partida = @id_partida
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[borrar_partida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[borrar_partida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -227,7 +228,7 @@ BEGIN
     WHERE id_partida = @id_partida
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[editar_jugador] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[editar_jugador] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -244,24 +245,26 @@ BEGIN
     WHERE id_jugador = @id_jugador
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[editar_partida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[editar_partida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROC [dbo].[editar_partida]
     @id_partida INT,
+    @jugador_actual INT,
     @ganador INT,
     @tiempo_partida TIME(7)
 AS
 BEGIN
     UPDATE Partida 
-    SET ganador = @ganador,
+    SET jugador_actual = @jugador_actual,
+        ganador = @ganador,
         tiempo_partida = @tiempo_partida
     WHERE id_partida = @id_partida
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[insertar_bitacora] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[insertar_bitacora] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -278,7 +281,7 @@ BEGIN
     SELECT SCOPE_IDENTITY() AS id_bitacora
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[insertar_jugada] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[insertar_jugada] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -299,7 +302,7 @@ BEGIN
     SELECT SCOPE_IDENTITY() AS id_jugada
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[insertar_jugador] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[insertar_jugador] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -314,7 +317,7 @@ BEGIN
     SELECT SCOPE_IDENTITY() AS id_jugador
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[insertar_jugadorxpartida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[insertar_jugadorxpartida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -331,23 +334,24 @@ BEGIN
     VALUES (@id_partida, @id_jugador, @puntaje_total, @resultado)
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[insertar_partida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[insertar_partida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROC [dbo].[insertar_partida]
+    @jugador_actual INT,
     @ganador INT,
     @fecha_partida DATETIME,
     @tiempo_partida TIME(7)
 AS
 BEGIN
-    INSERT INTO Partida (ganador, fecha_partida, tiempo_partida)
-    VALUES (@ganador, @fecha_partida, @tiempo_partida)
+    INSERT INTO Partida (jugador_actual, ganador, fecha_partida, tiempo_partida)
+    VALUES (@jugador_actual, @ganador, @fecha_partida, @tiempo_partida)
     SELECT SCOPE_IDENTITY() AS id_partida
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[listar_bitacora] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[listar_bitacora] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -366,7 +370,7 @@ BEGIN
     ORDER BY b.fecha DESC
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[listar_detalles_por_partida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[listar_detalles_por_partida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -383,7 +387,7 @@ BEGIN
     WHERE jxp.id_partida = @id_partida
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[listar_jugadas_por_jugador_partida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[listar_jugadas_por_jugador_partida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -407,7 +411,7 @@ BEGIN
     ORDER BY ronda ASC, id_jugada ASC
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[listar_jugadas_por_partida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[listar_jugadas_por_partida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -430,7 +434,7 @@ BEGIN
     ORDER BY ronda ASC, id_jugada ASC
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[listar_partidas_usuario] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[listar_partidas_usuario] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -441,6 +445,7 @@ AS
 BEGIN
     SELECT 
         p.id_partida, 
+        p.jugador_actual, 
         p.ganador, 
         p.fecha_partida, 
         p.tiempo_partida
@@ -450,7 +455,7 @@ BEGIN
     WHERE j.id_jugador = @id_jugador
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[listar_todos_jugadores] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[listar_todos_jugadores] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -464,7 +469,7 @@ BEGIN
     FROM Jugador
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[login_usuario] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[login_usuario] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -480,7 +485,7 @@ BEGIN
     WHERE nombre = @nombre AND pass = @pass
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[modificar_usuario] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[modificar_usuario] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -497,7 +502,7 @@ BEGIN
     WHERE id_usuario = @id_usuario
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[obtener_detalle_jugador_partida] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[obtener_detalle_jugador_partida] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -514,7 +519,70 @@ BEGIN
     WHERE id_partida = @id_partida AND id_jugador = @id_jugador
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[obtener_jugador_por_id] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[obtener_estadisticas_jugadores] Fecha de script: 18/11/2026 20:05:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROC [dbo].[obtener_estadisticas_jugadores]
+AS
+BEGIN
+    SELECT 
+        j.id_jugador,
+        j.nombre AS jugador,
+        COUNT(jxp.id_partida) AS partidas_jugadas,
+        SUM(CASE WHEN jxp.resultado IN ('Ganador', 'Ganada', 'Victoria') THEN 1 ELSE 0 END) AS ganadas,
+        SUM(CASE WHEN jxp.resultado IN ('Perdedor', 'Perdida', 'Derrota') THEN 1 ELSE 0 END) AS perdidas,
+        SUM(CASE WHEN jxp.resultado IN ('Empate', 'Empatada') THEN 1 ELSE 0 END) AS empatadas,
+        CAST(
+            ISNULL(
+                SUM(CASE WHEN jxp.resultado IN ('Ganador', 'Ganada', 'Victoria') THEN 1.0 ELSE 0.0 END) 
+                / NULLIF(COUNT(jxp.id_partida), 0) * 100, 
+            0) AS DECIMAL(5,2)
+        ) AS porcentaje_victorias,
+        ISNULL(SUM(DATEDIFF(SECOND, '00:00:00', p.tiempo_partida)), 0) AS tiempo_total_segundos,
+        CONVERT(VARCHAR(12), DATEADD(SECOND, ISNULL(SUM(DATEDIFF(SECOND, '00:00:00', p.tiempo_partida)), 0), 0), 108) AS tiempo_total_formato
+    FROM Jugador j
+    LEFT JOIN JugadorXPartida jxp ON j.id_jugador = jxp.id_jugador
+    LEFT JOIN Partida p ON jxp.id_partida = p.id_partida
+    GROUP BY j.id_jugador, j.nombre
+    ORDER BY ganadas DESC, porcentaje_victorias DESC;
+END
+GO
+/****** Objeto: StoredProcedure [dbo].[obtener_estadisticas_por_jugador] Fecha de script: 18/11/2026 20:05:25 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROC [dbo].[obtener_estadisticas_por_jugador]
+    @id_jugador INT
+AS
+BEGIN
+    SELECT 
+        j.id_jugador,
+        j.nombre AS jugador,
+        COUNT(jxp.id_partida) AS partidas_jugadas,
+        SUM(CASE WHEN jxp.resultado IN ('Ganador', 'Ganada', 'Victoria') THEN 1 ELSE 0 END) AS ganadas,
+        SUM(CASE WHEN jxp.resultado IN ('Perdedor', 'Perdida', 'Derrota') THEN 1 ELSE 0 END) AS perdidas,
+        SUM(CASE WHEN jxp.resultado IN ('Empate', 'Empatada') THEN 1 ELSE 0 END) AS empatadas,
+        CAST(
+            ISNULL(
+                SUM(CASE WHEN jxp.resultado IN ('Ganador', 'Ganada', 'Victoria') THEN 1.0 ELSE 0.0 END) 
+                / NULLIF(COUNT(jxp.id_partida), 0) * 100, 
+            0) AS DECIMAL(5,2)
+        ) AS porcentaje_victorias,
+        ISNULL(SUM(DATEDIFF(SECOND, '00:00:00', p.tiempo_partida)), 0) AS tiempo_total_segundos,
+        CONVERT(VARCHAR(12), DATEADD(SECOND, ISNULL(SUM(DATEDIFF(SECOND, '00:00:00', p.tiempo_partida)), 0), 0), 108) AS tiempo_total_formato
+    FROM Jugador j
+    LEFT JOIN JugadorXPartida jxp ON j.id_jugador = jxp.id_jugador
+    LEFT JOIN Partida p ON jxp.id_partida = p.id_partida
+    WHERE j.id_jugador = @id_jugador
+    GROUP BY j.id_jugador, j.nombre;
+END
+GO
+/****** Objeto: StoredProcedure [dbo].[obtener_jugador_por_id] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -530,7 +598,7 @@ BEGIN
     WHERE id_jugador = @id_jugador
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[obtener_partida_en_juego_por_usuario] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[obtener_partida_en_juego_por_usuario] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -541,6 +609,7 @@ AS
 BEGIN
     SELECT 
         p.id_partida, 
+        p.jugador_actual, 
         p.ganador, 
         p.fecha_partida, 
         p.tiempo_partida
@@ -551,7 +620,7 @@ BEGIN
       AND (p.ganador IS NULL OR p.ganador = -1)
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[obtener_partida_por_id] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[obtener_partida_por_id] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -562,6 +631,7 @@ AS
 BEGIN
     SELECT 
         id_partida, 
+        jugador_actual, 
         ganador, 
         fecha_partida, 
         tiempo_partida
@@ -569,7 +639,7 @@ BEGIN
     WHERE id_partida = @id_partida
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[obtener_usuario_por_id] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[obtener_usuario_por_id] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -583,7 +653,7 @@ BEGIN
     WHERE id_usuario = @id_usuario
 END
 GO
-/****** Objeto: StoredProcedure [dbo].[verificar_nombre_usuario] Fecha de script: 17/11/2026 23:16:57 ******/
+/****** Objeto: StoredProcedure [dbo].[verificar_nombre_usuario] Fecha de script: 18/11/2026 20:05:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
