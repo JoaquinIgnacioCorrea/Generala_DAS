@@ -30,7 +30,7 @@ namespace Generala_DAS
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
-                else tb_nombre_usuario.Text = "";
+                else LimpiarCampos();
             }
             else
             {
