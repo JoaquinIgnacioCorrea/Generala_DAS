@@ -48,6 +48,13 @@ namespace Generala_DAS
             return comando;
         }
 
+        private SqlCommand CrearComandoTXT(string comando_p)
+        {
+            SqlCommand comando = new SqlCommand(comando_p, conexion);
+            comando.CommandType = CommandType.Text;
+            return comando;
+        }
+
         public SqlParameter CrearParametro(string nombre, string valor)
         {
             SqlParameter parametro = new SqlParameter(nombre, valor);
@@ -74,6 +81,14 @@ namespace Generala_DAS
             SqlParameter parametro = new SqlParameter(nombre, valor);
             parametro.DbType = DbType.Int32;
             return parametro;
+        }
+
+        public int EscribirBU(string nombre)
+        {
+            SqlCommand comando = CrearComandoTXT(nombre);
+            int fila = comando.ExecuteNonQuery();
+            comando.Dispose();
+            return fila;
         }
 
         public int Escribir(string comando_p,List<SqlParameter> parametro = null)
