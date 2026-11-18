@@ -15,6 +15,7 @@ namespace BLL
         private readonly MP_JUGADA mp_jugada = new MP_JUGADA();
         private readonly MP_PARTIDA mp_partida = new MP_PARTIDA();
         private readonly MP_JUGADORXPARTIDA mp_jxp = new MP_JUGADORXPARTIDA();
+        private readonly BITACORA_BLL bitacora_bll = new BITACORA_BLL();
 
         public void AgregarJugador(PARTIDA_GENERALA_BE partida, int id_jugador_p)
         {
@@ -48,6 +49,7 @@ namespace BLL
                 foreach (JUGADOR_BE jugador in partida.Jugadores)
                 {
                     mp_jxp.Insertar(partida.Id_partida, jugador.Id_jugador);
+                    bitacora_bll.RegistrarEvento(jugador.Id_jugador, $"Inicio de partida {partida.Id_partida}");
                 }
             }
 
@@ -213,7 +215,30 @@ namespace BLL
             }
             else
             {
-                partida.Ganador = partida.Jugadores.OrderByDescending(j => j.Tablero.Puntaje_total).FirstOrDefault();
+                JUGADOR_BE j1 = partida.Jugadores[0];
+                JUGADOR_BE j2 = partida.Jugadores[1];
+
+                if (j1.Tablero.Puntaje_total > j2.Tablero.Puntaje_total)
+                {
+                    partida.Ganador = j1;
+                }
+                else if (j2.Tablero.Puntaje_total > j1.Tablero.Puntaje_total)
+                {
+                    partida.Ganador = j2;
+                }
+                else partida.Ganador = null;
+            }
+            mp_partida.Editar(partida);
+            foreach (JUGADOR_BE j in partida.Jugadores)
+            {
+                string resultado = partida.Ganador == null ? "EMPATE" : (j.Id_jugador == partida.Ganador.Id_jugador ? "GANADOR" : "PERDEDOR")
+                mp_jxp.ActualizarPuntajeYResultado(
+                    partida.Id_partida,
+                    j.Id_jugador,
+                    j.Tablero.Puntaje_total,
+                    resultado
+                    );
+                bitacora_bll.RegistrarEvento(j.Id_jugador, $" PARTIDA FINALIZADA #{partida.Id_partida} - {resultado}  ({j.Tablero.Puntaje_total}) puntos");
             }
         }
     }
