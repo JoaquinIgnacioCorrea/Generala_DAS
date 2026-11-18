@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    internal class MP_JUGADOR
+    public class MP_JUGADOR
     {
         private ACCESO acceso;
 
@@ -52,7 +52,7 @@ namespace DAL
             acceso.Cerrar();
         }
 
-        public JUGADOR_BE Listar_Usuario(int id_jugador)
+        public JUGADOR_BE Listar_Jugador(int id_jugador)
         {
             acceso = new ACCESO();
             acceso.Abrir();

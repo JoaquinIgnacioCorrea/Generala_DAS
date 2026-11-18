@@ -30,7 +30,8 @@ namespace BLL
                 usuario = new USUARIO_BE()
                 {
                     Usuario = nombreUsuario,
-                    Pass = password
+                    Pass = password,
+                    Id_jugador = int.Parse(new MP_JUGADOR().Insertar(nombreUsuario).ToString())
                 };
                 usuario_dal.Insertar(usuario);
                 UsuarioActual = usuario;

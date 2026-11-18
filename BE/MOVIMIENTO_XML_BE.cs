@@ -29,6 +29,14 @@ namespace BE
             set { jugador = value; }
         }
 
+        private int id_jugador;
+
+        public int Id_jugador
+        {
+            get { return id_jugador; }
+            set { id_jugador = value; }
+        }
+
         private int ronda;
         public int Ronda
         {

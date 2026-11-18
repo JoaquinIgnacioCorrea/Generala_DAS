@@ -13,7 +13,7 @@ namespace Generala_DAS
             InitializeComponent();
         }
         USUARIO_BLL usuario_bll;
-        USUARIO_BE usuario_be;
+        public USUARIO_BE usuario_be { get; private set; }
 
         private void btn_registrarse_Click(object sender, EventArgs e)
         {

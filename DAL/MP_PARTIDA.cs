@@ -10,7 +10,7 @@ using System.Data;
 
 namespace DAL
 {
-    internal class MP_PARTIDA
+    public class MP_PARTIDA
     {
         ACCESO acceso;
 
@@ -34,7 +34,7 @@ namespace DAL
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(acceso.CrearParametro("@id_partida", partida_p.Id_partida));
             parametros.Add(acceso.CrearParametro("@jugador_actual",partida_p.JugadorActual.Id_jugador));
-            parametros.Add(acceso.CrearParametro("@ganador",partida_p.Ganador.Id_jugador));
+            parametros.Add(acceso.CrearParametro("@ganador",partida_p.Ganador != null ? partida_p.Ganador.Id_jugador : 0));
             parametros.Add(acceso.CrearParametro("@tiempo_partida",partida_p.DuracionPartida));
             acceso.Abrir();
             acceso.Escribir("editar_partida", parametros);
@@ -72,7 +72,7 @@ namespace DAL
                 if (data["ganador"] != DBNull.Value)
                 {
                     int id_jugador = int.Parse(data["ganador"].ToString());
-                    partida.Ganador = mp_jugador.Listar_Usuario(id_jugador);
+                    partida.Ganador = mp_jugador.Listar_Jugador(id_jugador);
                 }
                 partidas.Add(partida);
             }
@@ -103,7 +103,7 @@ namespace DAL
                 {
                     int id_jugador = int.Parse(data["ganador"].ToString());
                     MP_JUGADOR mp_jugador = new MP_JUGADOR();
-                    partida.Ganador = mp_jugador.Listar_Usuario(id_jugador);
+                    partida.Ganador = mp_jugador.Listar_Jugador(id_jugador);
                 }
             }
             return partida;
@@ -116,7 +116,7 @@ namespace DAL
 
             // Creamos la lista de parámetros con el ID del usuario actual
             List<SqlParameter> parametros = new List<SqlParameter>();
-            parametros.Add(acceso.CrearParametro("@id_usuario", id_usuario));
+            parametros.Add(acceso.CrearParametro("@id_jugador", id_usuario));
 
             DataTable tabla = acceso.Listar("obtener_partida_en_juego_por_usuario", parametros);
             acceso.Cerrar();
@@ -138,7 +138,7 @@ namespace DAL
                 {
                     int id_jugador = int.Parse(data["ganador"].ToString());
                     MP_JUGADOR mp_jugador = new MP_JUGADOR();
-                    partida.Ganador = mp_jugador.Listar_Usuario(id_jugador);
+                    partida.Ganador = mp_jugador.Listar_Jugador(id_jugador);
                 }
             }
             return partida;

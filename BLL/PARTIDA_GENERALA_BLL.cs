@@ -12,8 +12,9 @@ namespace BLL
         private readonly TURNO_BLL turno_bll = new TURNO_BLL();
         private readonly TABLERO_BLL tablero_bll = new TABLERO_BLL();
         private readonly XML_MOVIMIENTOS xml_movimientos = new XML_MOVIMIENTOS();
+        private readonly MP_JUGADA mp_jugada = new MP_JUGADA();
 
-        public void AgregarJugador(PARTIDA_GENERALA_BE partida, string nombre)
+        public void AgregarJugador(PARTIDA_GENERALA_BE partida, int id_jugador_p)
         {
             if (partida == null)
                 throw new ArgumentNullException(nameof(partida));
@@ -21,7 +22,9 @@ namespace BLL
             if (partida.PartidaFinalizada || partida.RondaActual > 0)
                 throw new InvalidOperationException("No se pueden agregar jugadores con la partida en curso.");
 
-            partida.Jugadores.Add(new JUGADOR_BE(partida.Jugadores.Count + 1, nombre));
+            JUGADOR_BE jugador = new MP_JUGADOR().Listar_Jugador(id_jugador_p);
+
+            partida.Jugadores.Add(jugador);
         }
 
         public void Iniciar(PARTIDA_GENERALA_BE partida)
@@ -90,7 +93,7 @@ namespace BLL
             cubilete_bll.AlternarBloqueo(partida.Cubilete, indiceDado);
         }
 
-        public void AnotarJugada(PARTIDA_GENERALA_BE partida, CATEGORIAS categoria)
+        public List<MOVIMIENTO_XML_BE> AnotarJugada(PARTIDA_GENERALA_BE partida, CATEGORIAS categoria)
         {
             if (partida == null)
                 throw new ArgumentNullException(nameof(partida));
@@ -109,13 +112,20 @@ namespace BLL
             tablero_bll.RegistrarPuntaje(partida.JugadorActual.Tablero, categoria, puntos);
 
             
-            RegistrarMovimientoEnXml(partida, categoria.ToString(), puntos);
+            MOVIMIENTO_XML_BE mov = RegistrarMovimientoEnXml(partida, categoria.ToString(), puntos);
 
             turno_bll.Finalizar(partida.TurnoActual);
+            List<MOVIMIENTO_XML_BE> movimientos = null;
+            if (partida.TurnoActual.Finalizado)
+            {
+                mp_jugada.Insertar(mov);
+                movimientos = mp_jugada.ListarJugadaXPartida(partida.Id_partida);
+            }
             AvanzarTurno(partida);
+            return movimientos;
         }
 
-        private void RegistrarMovimientoEnXml(PARTIDA_GENERALA_BE partida, string categoriaAnotada, int puntajeObtenido)
+        private MOVIMIENTO_XML_BE RegistrarMovimientoEnXml(PARTIDA_GENERALA_BE partida, string categoriaAnotada, int puntajeObtenido)
         {
             int idPartida = partida.Id_partida > 0 ? partida.Id_partida : 1;
             MOVIMIENTO_XML_BE mov = new MOVIMIENTO_XML_BE
@@ -133,6 +143,7 @@ namespace BLL
 
             string rutaArchivo = xml_movimientos.ObtenerRutaArchivo(idPartida);
             xml_movimientos.GuardarMovimiento(mov, rutaArchivo);
+            return mov;
         }
 
         public List<MOVIMIENTO_XML_BE> LeerMovimientosXml(string rutaArchivo)

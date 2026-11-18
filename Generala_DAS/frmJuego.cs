@@ -22,22 +22,25 @@ namespace Generala_DAS
         private int miIndice;
         private TABLERO_BLL tablerobll = new TABLERO_BLL();
 
-        public frmJuego()
+        public frmJuego(int id_jugador1_p, int id_jugador2_p = -1)
         {
             InitializeComponent();
             CrearColumnas();
             AsignarTagsADados();
 
+            Tablero.ReadOnly = true;
+            Tablero.RowHeadersWidth = 90;
+
             partida_be = new PARTIDA_GENERALA_BE();
             partida_bll = new PARTIDA_GENERALA_BLL();
-            partida_bll.AgregarJugador(partida_be, "Jugador 1");
-            partida_bll.AgregarJugador(partida_be, "Jugador 2");
-            partida_bll.Iniciar(partida_be);
 
+            partida_bll.AgregarJugador(partida_be, id_jugador1_p);
+            partida_bll.AgregarJugador(partida_be, id_jugador2_p);
+            partida_bll.Iniciar(partida_be);
             CrearFilas();
         }
 
-        public frmJuego(ServidorGenerala e) : this()
+        public frmJuego(ServidorGenerala e, int id_jugador, int id_jugador2 = -1) : this(id_jugador, id_jugador2)
         {
             enlace = e;
         }
@@ -46,6 +49,7 @@ namespace Generala_DAS
         {
             if (enlace != null)
             {
+
                 ConfigurarRed(enlace);
             }
         }
@@ -150,6 +154,15 @@ namespace Generala_DAS
             }
         }
 
+        public void MostrarJugadasPartida(List<MOVIMIENTO_XML_BE> movimientos)
+        {
+            lb_jugadas.Items.Clear();
+            foreach(MOVIMIENTO_XML_BE mov in movimientos)
+            {
+                lb_jugadas.Items.Add($"Ronda {mov.Ronda}: {mov.Jugador} anotó {mov.PuntajeObtenido} en la categoria {mov.CategoriaAnotada}");
+            }
+        }
+
         public void ConfigurarRed(ServidorGenerala e)
         {
             enlace = e;
@@ -205,7 +218,7 @@ namespace Generala_DAS
                     break;
                 case "ANOTAR":
                     CATEGORIAS cat = (CATEGORIAS)Enum.Parse(typeof(CATEGORIAS), partes[1]);
-                    partida_bll.AnotarJugada(partida_be, cat);
+                    MostrarJugadasPartida(partida_bll.AnotarJugada(partida_be, cat));
                     break;
                 default: throw new InvalidOperationException("No se reconocio el comando");
             }

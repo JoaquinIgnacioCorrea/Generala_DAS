@@ -26,7 +26,10 @@ namespace Generala_DAS
 
         private void frmMenuPrincipal_Load(object sender, EventArgs e)
         {
-            if(idJugadorActual == 0) MostrarLogin();
+            if(idJugadorActual == 0)
+            {
+                idJugadorActual = MostrarLogin();
+            }
             if (idJugadorActual > 0)
             {
                 try
@@ -40,7 +43,7 @@ namespace Generala_DAS
             }
         }
 
-        private void MostrarLogin()
+        private int MostrarLogin()
         {
             this.Hide();
 
@@ -49,28 +52,36 @@ namespace Generala_DAS
                 if(login.ShowDialog() == DialogResult.OK)
                 {
                     this.Show();
+                    return login.usuario_be.Id_jugador;
                 }
                 else
                 {
                     Application.Exit();
                 }
+                return -1;
             }
 
         }
 
         private void btnJugar_Click(object sender, EventArgs e)
         {
-            using (frmJuego frmPartida = new frmJuego())
+            if(idJugadorActual > -1)
             {
-                frmPartida.ShowDialog(this);
+                using (frmJuego frmPartida = new frmJuego(idJugadorActual))
+                {
+                    frmPartida.ShowDialog(this);
+                }
             }
         }
 
         private void btnBitacora_Click(object sender, EventArgs e)
         {
-            using (frmBitacora frm = new frmBitacora())
+            if (idJugadorActual > -1)
             {
-                frm.ShowDialog(this);
+                using (frmBitacora frm = new frmBitacora())
+                {
+                    frm.ShowDialog(this);
+                }
             }
         }
 
@@ -129,12 +140,13 @@ namespace Generala_DAS
             
             btnHostear.Text = "rival conectado!";
             btnHostear.BackColor = System.Drawing.Color.Green;
-            using(frmJuego frm = new frmJuego(enlace))
+            if(idJugadorActual > -1)
             {
-                frm.ShowDialog(this);
+                using (frmJuego frm = new frmJuego(enlace, idJugadorActual))
+                {
+                    frm.ShowDialog(this);
+                }
             }
-
-
         }
 
         private async void btnUnirse_Click(object sender, EventArgs e)
@@ -154,7 +166,7 @@ namespace Generala_DAS
                 
                 btnUnirse.BackColor = Color.Green;
                 btnUnirse.Text = "Exito!";
-                using (frmJuego frm = new frmJuego(enlace)) { frm.ShowDialog(this); }
+                using (frmJuego frm = new frmJuego(enlace, idJugadorActual)) { frm.ShowDialog(this); }
                     
 
             }

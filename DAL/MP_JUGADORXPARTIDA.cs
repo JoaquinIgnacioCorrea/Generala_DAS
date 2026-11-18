@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    internal class MP_JUGADORXPARTIDA
+    public class MP_JUGADORXPARTIDA
     {
         private ACCESO acceso;
 
